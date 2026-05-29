@@ -1,2 +1,2 @@
 # Web-Asset
-Semua asset untuk wesite salafy palembang
+Semua asset untuk website salafy palembang
