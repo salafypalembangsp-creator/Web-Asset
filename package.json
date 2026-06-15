@@ -1,0 +1,9 @@
+{
+  "name": "admin-salafy-palembang",
+  "version": "1.0.0",
+  "description": "Dashboard Admin Salafy Palembang",
+  "main": "api/upload.js",
+  "dependencies": {
+    "@octokit/rest": "^20.1.1"
+  }
+}

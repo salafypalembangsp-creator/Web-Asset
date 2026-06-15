@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Salafy Palembang Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Hanken+Grotesk:wght@600;700&family=Geist:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F3F4F6;
+            margin: 0;
+            padding: 0;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #bfc9c3;
+            border-radius: 10px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#dce2f3",
+                        "surface-container-low": "#f0f3ff",
+                        "surface": "#f9f9ff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-tint": "#2b6954",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e2e8f8",
+                        "tertiary-container": "#623c00",
+                        "outline": "#707974",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ebf1ff",
+                        "on-primary-container": "#80bea6",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-fixed-dim": "#95d3ba",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#6cf8bb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "error": "#ba1a1a",
+                        "surface-container": "#e7eefe",
+                        "background": "#f9f9ff",
+                        "primary-fixed": "#b0f0d6",
+                        "primary-container": "#064e3b",
+                        "on-surface": "#151c27",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "inverse-primary": "#95d3ba",
+                        "secondary-fixed-dim": "#4edea3",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#002113",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "primary": "#003527",
+                        "on-background": "#151c27",
+                        "on-secondary-container": "#00714d",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#002117",
+                        "surface-dim": "#d3daea",
+                        "outline-variant": "#bfc9c3"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "container-padding": "32px",
+                        "base": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "sidebar-width": "280px",
+                        "gutter": "24px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#F3F4F6] font-body-md text-on-surface pb-20 lg:pb-0">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex w-[280px] h-screen fixed left-0 top-0 bg-primary border-r border-outline-variant flex flex-col py-stack-lg z-20">
+        <div class="px-6 mb-stack-lg">
+            <h1 class="font-display-lg text-2xl font-bold text-on-primary">Salafy Palembang</h1>
+            <p class="text-xs text-primary-fixed-dim opacity-80 font-medium">Admin Console</p>
+        </div>
+        <nav class="flex-grow space-y-1 custom-scrollbar overflow-y-auto px-2">
+            <a class="flex items-center px-4 py-3 text-secondary-fixed border-l-4 border-secondary-fixed bg-on-primary-fixed-variant transition-transform active:scale-[0.98]" href="admin-dashboard.html">
+                <span class="material-symbols-outlined mr-3">dashboard</span>
+                <span class="text-sm font-medium">Dashboard</span>
+            </a>
+            <a class="flex items-center px-4 py-3 text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="admin-artikel.html">
+                <span class="material-symbols-outlined mr-3">article</span>
+                <span class="text-sm font-medium">Articles</span>
+            </a>
+            <a class="flex items-center px-4 py-3 text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="admin-audio.html">
+                <span class="material-symbols-outlined mr-3">mic_external_on</span>
+                <span class="text-sm font-medium">Audio</span>
+            </a>
+            <!-- DIHUBUNGKAN: href diubah ke admin-poster.html -->
+            <a class="flex items-center px-4 py-3 text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="admin-poster.html">
+                <span class="material-symbols-outlined mr-3">image</span>
+                <span class="text-sm font-medium">Posters</span>
+            </a>
+            <a class="flex items-center px-4 py-3 text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+                <span class="material-symbols-outlined mr-3">manage_accounts</span>
+                <span class="text-sm font-medium">Admin Management</span>
+            </a>
+        </nav>
+        
+        <div class="px-4 mt-auto space-y-2">
+            <div class="flex items-center p-3 rounded-lg bg-primary-container/30">
+                <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-primary font-bold overflow-hidden shadow-inner shrink-0">
+                    <img id="sidebar-admin-avatar" alt="Admin Photo" src="/logo-salafy.png" class="w-full h-full object-cover"/>
+                </div>
+                <div class="ml-3 overflow-hidden">
+                    <p class="text-xs font-semibold text-on-primary truncate" id="sidebar-admin-email">Admin</p>
+                    <p class="text-[10px] text-primary-fixed-dim truncate" id="sidebar-admin-role">Checking auth...</p>
+                </div>
+            </div>
+            <button onclick="logoutAdmin()" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-900/40 hover:bg-red-800 text-red-200 hover:text-white rounded-lg transition-colors border border-red-800/30 text-xs font-medium">
+                <span class="material-symbols-outlined text-sm">logout</span>
+                <span>Keluar Konsol</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- MOBILE NAV -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50 flex justify-around items-center h-16 px-2">
+        <a href="admin-dashboard.html" class="flex flex-col items-center justify-center text-primary flex-1 py-1">
+            <span class="material-symbols-outlined text-xl">dashboard</span>
+            <span class="text-[10px] font-bold mt-0.5">Dasbor</span>
+        </a>
+        <a href="admin-artikel.html" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary flex-1 py-1">
+            <span class="material-symbols-outlined text-xl">article</span>
+            <span class="text-[10px] font-medium mt-0.5">Artikel</span>
+        </a>
+        <a href="admin-audio.html" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary flex-1 py-1">
+            <span class="material-symbols-outlined text-xl">mic_external_on</span>
+            <span class="text-[10px] font-medium mt-0.5">Audio</span>
+        </a>
+        <!-- DIHUBUNGKAN: href diubah ke admin-poster.html -->
+        <a href="admin-poster.html" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary flex-1 py-1">
+            <span class="material-symbols-outlined text-xl">image</span>
+            <span class="text-[10px] font-medium mt-0.5">Poster</span>
+        </a>
+        <button onclick="logoutAdmin()" class="flex flex-col items-center justify-center text-red-600 flex-1 py-1 focus:outline-none">
+            <span class="material-symbols-outlined text-xl">logout</span>
+            <span class="text-[10px] font-medium mt-0.5">Keluar</span>
+        </button>
+    </div>
+
+    <div class="lg:ml-[280px] flex flex-col min-h-screen relative">
+        <header class="flex justify-between items-center px-4 lg:px-8 h-16 sticky top-0 z-30 bg-surface border-b border-outline-variant gap-4">
+            <div class="flex items-center gap-2">
+                <h2 class="text-base lg:text-lg font-bold text-primary whitespace-nowrap">Admin Dashboard</h2>
+            </div>
+            
+            <div class="flex items-center gap-2 lg:gap-6 relative w-full lg:w-auto justify-end">
+                <div class="relative focus-within:ring-2 focus-within:ring-primary rounded-lg transition-all w-full max-w-[160px] sm:max-w-xs lg:w-64">
+                    <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm lg:text-base">search</span>
+                    <input id="dashboard-search" class="bg-surface-container-low border-none rounded-lg pl-8 lg:pl-10 pr-2 lg:pr-4 py-1.5 lg:py-2 text-xs lg:text-sm w-full focus:ring-0 placeholder:text-gray-400" placeholder="Cari aktivitas..." type="text"/>
+                </div>
+                
+                <div class="flex items-center gap-1 sm:gap-3 relative shrink-0">
+                    <button onclick="toggleNotificationDropdown(event)" class="text-on-surface-variant hover:text-primary transition-colors relative p-1.5 rounded-full focus:outline-none">
+                        <span class="material-symbols-outlined text-xl lg:text-2xl">notifications</span>
+                        <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-error rounded-full"></span>
+                    </button>
+                    <button onclick="toggleSettingsModal(true)" class="text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full focus:outline-none">
+                        <span class="material-symbols-outlined text-xl lg:text-2xl">settings</span>
+                    </button>
+                    
+                    <button onclick="toggleUserDropdown(event)" class="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-outline-variant border border-white shadow-sm overflow-hidden flex items-center justify-center shrink-0 focus:outline-none cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+                        <img id="header-admin-avatar" src="https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/account_circle/default/24px.svg" class="w-full h-full object-cover hidden"/>
+                        <span id="header-admin-icon-placeholder" class="material-symbols-outlined text-gray-600 text-lg lg:text-xl">account_circle</span>
+                    </button>
+                </div>
+
+                <div id="notificationDropdown" class="absolute right-0 top-12 w-72 sm:w-80 bg-white border border-outline-variant rounded-xl shadow-2xl z-40 p-4 hidden">
+                    <div class="flex justify-between items-center border-b border-gray-100 pb-2 mb-2">
+                        <h4 class="text-xs sm:text-sm text-primary font-bold flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm text-primary">security_update_good</span>
+                            Log Akses Sistem
+                        </h4>
+                        <span class="text-[9px] bg-emerald-50 text-emerald-800 px-1.5 py-0.5 rounded font-medium">Security</span>
+                    </div>
+                    <div class="space-y-3 text-xs max-h-60 overflow-y-auto custom-scrollbar">
+                        <div class="p-2 bg-gray-50 rounded border-l-2 border-primary">
+                            <p class="text-gray-800 font-medium">Sesi admin berhasil diverifikasi.</p>
+                            <span class="text-[10px] text-gray-400">Baru saja</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="userDropdownMenu" class="absolute right-0 top-12 w-56 bg-white border border-outline-variant rounded-xl shadow-2xl z-40 py-2 hidden animate-in fade-in slide-in-from-top-1 duration-100">
+                    <div class="px-4 py-2 border-b border-gray-100">
+                        <p class="text-xs font-bold text-gray-800 truncate" id="dropdown-profile-name">Memuat nama...</p>
+                        <p class="text-[10px] text-gray-400 truncate" id="dropdown-profile-status">Memuat status...</p>
+                    </div>
+                    <button onclick="bukaModalProfil()" class="w-full flex items-center gap-2 px-4 py-2.5 text-left text-xs text-gray-700 hover:bg-gray-50 font-medium transition-colors">
+                        <span class="material-symbols-outlined text-sm text-gray-500">manage_accounts</span>
+                        <span>Pengaturan Profil</span>
+                    </button>
+                    <div class="border-t border-gray-100 my-1"></div>
+                    <button onclick="logoutAdmin()" class="w-full flex items-center gap-2 px-4 py-2.5 text-left text-xs text-red-600 hover:bg-red-50 font-medium transition-colors">
+                        <span class="material-symbols-outlined text-sm text-red-500">logout</span>
+                        <span>Keluar Akun</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-4 lg:p-6 space-y-4 max-w-[1400px]">
+            <section>
+                <div class="flex flex-col sm:flex-row gap-4 justify-between sm:items-end bg-white border border-outline-variant p-4 lg:p-6 rounded-xl shadow-sm">
+                    <div>
+                        <h3 class="text-lg lg:text-xl font-bold text-primary" id="welcome-title">Ahlan wa Sahlan, Admin</h3>
+                        <p class="text-xs lg:text-sm text-on-surface-variant mt-0.5">Status manajemen data dan maklumat dakwah Ma'had hari ini.</p>
+                    </div>
+                    <div class="text-left sm:text-right border-t sm:border-t-0 sm:border-l border-outline-variant/60 pt-3 sm:pt-0 sm:pl-6 shrink-0">
+                        <p class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-widest font-semibold mb-0.5">Penanggalan Hari Ini</p>
+                        <p class="text-xs lg:text-sm font-bold text-gray-800" id="current-date">...</p>
+                        <p class="text-emerald-700 font-medium text-xs mt-0.5 flex items-center sm:justify-end gap-1" id="hijri-date">
+                            <span class="material-symbols-outlined text-[10px]">dark_mode</span>
+                            <span>Memuat kalender...</span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white border border-outline-variant rounded-xl shadow-sm overflow-hidden flex items-center h-12">
+                <div class="bg-error text-white text-[10px] lg:text-xs font-bold uppercase tracking-wider px-3 lg:px-4 flex items-center h-full gap-1 z-10 shadow-md shrink-0">
+                    <span class="material-symbols-outlined text-sm animate-pulse">campaign</span>
+                    <span>Info</span>
+                </div>
+                <div class="flex-grow overflow-hidden relative flex items-center h-full bg-gray-50">
+                    <marquee id="live-marquee" class="text-xs lg:text-sm font-medium text-gray-700" scrollamount="4">
+                        Memuat data dari koleksi informasi Firebase...
+                    </marquee>
+                </div>
+                <div class="flex items-center h-full px-1.5 border-l border-gray-100 bg-white gap-0.5 z-10 shadow-sm shrink-0">
+                    <button onclick="bukaModalRunningText()" class="p-1.5 text-primary hover:bg-emerald-50 rounded transition-colors focus:outline-none">
+                        <span class="material-symbols-outlined text-base">edit</span>
+                    </button>
+                    <button onclick="hapusRunningText()" class="p-1.5 text-error hover:bg-red-50 rounded transition-colors focus:outline-none">
+                        <span class="material-symbols-outlined text-base">delete</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white border border-outline-variant p-4 lg:p-6 flex flex-col justify-between group hover:border-primary transition-colors rounded-xl shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-surface-container-low rounded-lg text-primary"><span class="material-symbols-outlined text-xl">article</span></div>
+                        <span class="text-on-secondary-fixed-variant text-[10px] font-bold bg-secondary-container px-2 py-0.5 rounded-sm">LIVE</span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Total Articles</p>
+                        <h4 class="text-2xl font-bold text-primary mt-0.5" id="stat-articles">...</h4>
+                    </div>
+                </div>
+                <div class="bg-white border border-outline-variant p-4 lg:p-6 flex flex-col justify-between group hover:border-primary transition-colors rounded-xl shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-surface-container-low rounded-lg text-primary"><span class="material-symbols-outlined text-xl">mic_external_on</span></div>
+                        <span class="text-on-secondary-fixed-variant text-[10px] font-bold bg-secondary-container px-2 py-0.5 rounded-sm">LIVE</span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Audio Tracks</p>
+                        <h4 class="text-2xl font-bold text-primary mt-1" id="stat-audio">...</h4>
+                    </div>
+                </div>
+                <div class="bg-white border border-outline-variant p-4 lg:p-6 flex flex-col justify-between group hover:border-primary transition-colors rounded-xl shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-surface-container-low rounded-lg text-primary"><span class="material-symbols-outlined text-xl">image</span></div>
+                        <span class="text-on-secondary-fixed-variant text-[10px] font-bold bg-secondary-container px-2 py-0.5 rounded-sm">LIVE</span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Total Posters</p>
+                        <h4 class="text-2xl font-bold text-primary mt-1" id="stat-posters">...</h4>
+                    </div>
+                </div>
+                <div class="bg-white border border-outline-variant p-4 lg:p-6 flex flex-col justify-between group hover:border-primary transition-colors rounded-xl shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div class="p-2 bg-surface-container-low rounded-lg text-primary"><span class="material-symbols-outlined text-xl">menu_book</span></div>
+                        <span class="text-on-secondary-fixed-variant text-[10px] font-bold bg-secondary-container px-2 py-0.5 rounded-sm">BATCH</span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider">Kumpulan Hadits</p>
+                        <h4 class="text-2xl font-bold text-primary mt-1" id="stat-hadits">...</h4>
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <section class="lg:col-span-2 bg-white border border-outline-variant rounded-xl overflow-hidden flex flex-col shadow-sm">
+                    <div class="px-4 py-3 border-b border-outline-variant flex justify-between items-center">
+                        <h5 class="text-sm font-bold text-primary">Recent Activity Log</h5>
+                        <button class="text-[11px] text-primary hover:underline font-semibold">View All</button>
+                    </div>
+                    <div class="p-0 overflow-x-auto custom-scrollbar max-h-[350px]">
+                        <table class="w-full text-left border-collapse min-w-[500px]">
+                            <thead class="bg-[#F9FAFB]">
+                                <tr class="text-[11px] text-on-surface-variant uppercase font-semibold border-b border-gray-100">
+                                    <th class="px-4 py-2.5">Action Log</th>
+                                    <th class="px-4 py-2.5">Module</th>
+                                    <th class="px-4 py-2.5">Time</th>
+                                    <th class="px-4 py-2.5">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/30 text-xs" id="activity-table-body">
+                                <tr class="h-16 text-center text-gray-400">
+                                    <td colspan="4" class="py-4">Memuat riwayat log server...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section class="flex flex-col">
+                    <div class="bg-white border border-outline-variant p-4 h-full flex flex-col rounded-xl shadow-sm">
+                        <h5 class="text-sm font-bold text-primary mb-4">Quick Shortcuts</h5>
+                        <div class="grid grid-cols-2 gap-3 flex-grow">
+                            <a class="flex flex-col items-center justify-center p-3 border border-outline-variant rounded-xl hover:bg-surface-container-lowest hover:border-primary transition-all text-center group" href="admin-artikel.html">
+                                <span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">post_add</span>
+                                <span class="text-[11px] font-bold text-gray-700">New Article</span>
+                            </a>
+                            <a class="flex flex-col items-center justify-center p-3 border border-outline-variant rounded-xl hover:bg-surface-container-lowest hover:border-primary transition-all text-center group" href="admin-audio.html">
+                                <span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">cloud_upload</span>
+                                <span class="text-[11px] font-bold text-gray-700">Upload Audio</span>
+                            </a>
+                            <!-- DIHUBUNGKAN: Shortcut menuju halaman poster baru -->
+                            <a class="flex flex-col items-center justify-center p-3 border border-outline-variant rounded-xl hover:bg-surface-container-lowest hover:border-primary transition-all text-center group" href="admin-poster.html">
+                                <span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">add_photo_alternate</span>
+                                <span class="text-[11px] font-bold text-gray-700">Add Poster</span>
+                            </a>
+                            <a class="flex flex-col items-center justify-center p-3 border border-outline-variant rounded-xl hover:bg-surface-container-lowest hover:border-primary transition-all text-center group" href="#">
+                                <span class="material-symbols-outlined text-primary mb-1 text-2xl group-hover:scale-110 transition-transform">forum</span>
+                                <span class="text-[11px] font-bold text-gray-700">Answer Q&A</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <section class="lg:col-span-2 bg-white border border-outline-variant p-4 lg:p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center gap-2 border-b border-gray-100 pb-3 mb-4">
+                        <span class="material-symbols-outlined text-primary animate-pulse">sensors</span>
+                        <h5 class="text-sm lg:text-base font-bold text-primary" id="config-panel-title">Live Radio Configuration Panel</h5>
+                    </div>
+                    
+                    <form id="form-radio-config" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1.5">Judul Kajian Terkini</label>
+                            <input id="radio-judul" type="text" required class="w-full p-2.5 bg-gray-50 border border-outline-variant rounded-xl text-gray-800 font-medium focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Pembahasan Kitab Tauhid"/>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1.5">Asatidzah / Pemateri</label>
+                            <input id="radio-pemateri" type="text" required class="w-full p-2.5 bg-gray-50 border border-outline-variant rounded-xl text-gray-800 font-medium focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Ustadz Abu Hafidz"/>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1.5 flex justify-between">
+                                <span>URL Streaming Utama (Icecast/Shoutcast)</span>
+                                <span id="lock-badge-utama" class="text-red-600 font-bold tracking-tight hidden uppercase text-[10px]">🔒 Locked for Editor</span>
+                            </label>
+                            <input id="radio-url-utama" type="url" required class="w-full p-2.5 bg-gray-50 border border-outline-variant rounded-xl text-gray-800 font-mono text-xs focus:ring-1 focus:ring-primary focus:outline-none disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed" placeholder="https://domain-radio.com/listen"/>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1.5 flex justify-between">
+                                <span>URL Streaming Cadangan (Backup Server)</span>
+                                <span id="lock-badge-backup" class="text-red-600 font-bold tracking-tight hidden uppercase text-[10px]">🔒 Locked for Editor</span>
+                            </label>
+                            <input id="radio-url-backup" type="url" class="w-full p-2.5 bg-gray-50 border border-outline-variant rounded-xl text-gray-800 font-mono text-xs focus:ring-1 focus:ring-primary focus:outline-none disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed" placeholder="https://backup-server.com/listen"/>
+                        </div>
+                        <div class="sm:col-span-2 pt-2">
+                            <button type="submit" class="w-full lg:w-auto bg-primary text-white font-semibold text-xs px-6 py-3 rounded-xl hover:bg-primary-container transition-all flex items-center justify-center gap-1.5">
+                                <span class="material-symbols-outlined text-base">cloud_sync</span>
+                                <span>Sinkronkan Konfigurasi Radio</span>
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <div class="bg-primary text-white p-5 rounded-xl flex flex-col justify-between relative overflow-hidden shadow-md min-h-[340px]">
+                    <div class="absolute -right-6 -bottom-6 text-white/5 pointer-events-none">
+                        <span class="material-symbols-outlined" style="font-size: 150px;">radio</span>
+                    </div>
+                    
+                    <div class="relative z-10 w-full">
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-[10px] font-bold bg-red-600 text-white px-2 py-0.5 rounded uppercase tracking-wider animate-pulse flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                                ON AIR PREVIEW
+                            </span>
+                            <span class="text-primary-fixed-dim text-xs font-mono" id="player-status">Ready</span>
+                        </div>
+                        
+                        <div class="space-y-0.5 my-2">
+                            <h6 class="text-base font-bold tracking-tight line-clamp-1 text-secondary-fixed" id="preview-judul">Radio Stream</h6>
+                            <p class="text-xs text-primary-fixed opacity-90 font-medium flex items-center gap-1" id="preview-pemateri">
+                                <span class="material-symbols-outlined text-xs">record_voice_over</span>
+                                <span>-</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10 flex justify-center items-center my-4">
+                        <div class="w-48 h-48 rounded-full bg-white border-4 border-secondary-fixed shadow-2xl flex items-center justify-center overflow-hidden group transition-transform hover:scale-105">
+                            <img alt="Radio Salafy Palembang Logo" src="/logo-radio.jpg" class="w-full h-full object-cover bg-white" onerror="this.src='https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/radio/default/48px.svg'"/>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10 bg-on-primary-fixed-variant/40 p-3 rounded-xl border border-white/10 w-full">
+                        <audio id="audio-preview-element" controls class="w-full h-8 opacity-90 focus:outline-none"></audio>
+                        <div class="flex justify-between text-[10px] text-primary-fixed-dim mt-2 px-1">
+                            <button onclick="muatSumberAudio('utama')" class="hover:text-white transition-colors underline">Server Utama</button>
+                            <button onclick="muatSumberAudio('backup')" class="hover:text-white transition-colors underline">Server Backup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL POPUP SETTINGS PROFILE -->
+    <div id="profileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden" onclick="toggleProfileModal(false)">
+        <div class="bg-white rounded-2xl max-w-md w-full mx-4 p-6 shadow-2xl border border-gray-100 text-gray-900 animate-in zoom-in-95 duration-150" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b pb-2.5 mb-4">
+                <h3 class="text-sm sm:text-base text-primary font-bold flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-lg">account_box</span>
+                    Pengaturan Profil Admin
+                </h3>
+                <button onclick="toggleProfileModal(false)" class="text-gray-400 hover:text-gray-600 focus:outline-none"><span class="material-symbols-outlined text-lg">close</span></button>
+            </div>
+            
+            <form id="form-admin-profile" class="space-y-4 text-xs sm:text-sm">
+                <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-outline-variant overflow-hidden shadow-md shrink-0 border border-white">
+                        <img id="modal-profile-preview" src="/logo-salafy.png" class="w-full h-full object-cover"/>
+                    </div>
+                    <div class="flex-grow">
+                        <p class="font-bold text-gray-800 text-xs sm:text-sm" id="modal-profile-text-name">-</p>
+                        <p class="text-gray-400 text-[11px]" id="modal-profile-text-status">-</p>
+                        <p class="text-primary text-[10px] font-mono mt-0.5" id="modal-profile-text-email">-</p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button type="button" onclick="triggerPilihanMedia('ganti')" class="px-2 py-1 bg-primary text-white text-[10px] font-bold rounded hover:bg-primary-container transition-colors flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-xs">edit_square</span>Ganti Foto
+                            </button>
+                            <button type="button" id="btn-action-delete-media" onclick="triggerPilihanMedia('hapus')" class="px-2 py-1 bg-red-50 text-red-700 border border-red-200 text-[10px] font-bold rounded hover:bg-red-100 transition-colors flex items-center gap-0.5">
+                                <span class="material-symbols-outlined text-xs text-red-700">delete_forever</span>Hapus Foto
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-500 uppercase mb-1.5">Nama Lengkap / Gelar Kunyah</label>
+                    <input id="profile-input-nama" type="text" required class="w-full p-2.5 bg-gray-50 border border-outline-variant rounded-xl text-gray-800 font-medium focus:ring-1 focus:ring-primary focus:outline-none"/>
+                </div>
+
+                <div id="wrapper-uploader-zona" class="border border-dashed border-emerald-300 rounded-xl p-3 bg-emerald-50/30 hidden">
+                    <label class="block text-[11px] font-bold text-emerald-800 uppercase mb-1.5 flex justify-between items-center">
+                        <span>Pilih Gambar Pengganti dari Perangkat</span>
+                        <span id="upload-status-badge" class="text-[9px] bg-gray-200 text-gray-600 px-1.5 py-0.5 rounded font-bold hidden">PROCESSING</span>
+                    </label>
+                    <input id="profile-file-uploader" type="file" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-container file:cursor-pointer cursor-pointer"/>
+                    
+                    <div id="github-progress-container" class="w-full bg-gray-200 h-1.5 rounded-full mt-2.5 hidden overflow-hidden">
+                        <div id="github-progress-bar" class="bg-emerald-600 h-full w-0 transition-all duration-150"></div>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2 border-t border-gray-100">
+                    <button type="button" onclick="toggleProfileModal(false)" class="flex-1 border border-outline-variant py-2.5 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors">Batal</button>
+                    <button type="submit" id="btn-submit-profile" class="flex-1 bg-primary text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-primary-container transition-all">Simpan Profil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="runningTextModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden" onclick="toggleRunningTextModal(false)">
+        <div class="bg-white rounded-2xl max-w-sm w-full mx-4 p-5 shadow-2xl border border-gray-100 text-gray-900 animate-in zoom-in-95 duration-150" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b pb-2 mb-3">
+                <h3 class="text-sm sm:text-base text-primary font-bold flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-lg">campaign</span>
+                    Update Teks Berjalan
+                </h3>
+                <button onclick="toggleRunningTextModal(false)" class="text-gray-400 hover:text-gray-600 focus:outline-none"><span class="material-symbols-outlined text-lg">close</span></button>
+            </div>
+            <form id="form-running-text" class="space-y-3">
+                <div>
+                    <textarea id="input-marquee-text" rows="3" required class="w-full p-2.5 bg-gray-50 border border-outline-variant rounded-xl text-xs sm:text-sm font-medium text-gray-800 focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Ketik maklumat dakwah..."></textarea>
+                </div>
+                <div class="flex gap-2 pt-1">
+                    <button type="button" onclick="toggleRunningTextModal(false)" class="flex-1 border border-outline-variant py-2.5 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-50 transition-colors">Batal</button>
+                    <button type="submit" class="flex-1 bg-primary text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-primary-container transition-all">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden" onclick="toggleSettingsModal(false)">
+        <div class="bg-white rounded-2xl max-w-xs w-full mx-4 p-5 shadow-2xl text-gray-900 animate-in zoom-in-95 duration-150" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center border-b pb-2 mb-3">
+                <h3 class="text-sm font-bold text-primary flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-lg">settings_applications</span>
+                    Console Settings
+                </h3>
+                <button onclick="toggleSettingsModal(false)" class="text-gray-400 hover:text-gray-600 focus:outline-none"><span class="material-symbols-outlined text-lg">close</span></button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div class="p-2.5 bg-gray-50 rounded-lg flex justify-between items-center">
+                    <div>
+                        <p class="font-medium text-gray-800">Database Engine</p>
+                        <p class="text-[10px] text-gray-400">web-salafypalembang</p>
+                    </div>
+                    <span class="px-1.5 py-0.5 bg-emerald-50 text-emerald-800 font-bold text-[9px] rounded uppercase">Live</span>
+                </div>
+            </div>
+            <button onclick="toggleSettingsModal(false)" class="w-full mt-4 bg-primary text-white py-2.5 rounded-xl text-xs font-semibold hover:bg-primary-container transition-colors focus:outline-none">Tutup</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, addDoc, getDoc, setDoc, updateDoc, deleteDoc, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDvfU5f2B6TVjAtx3qmjqngM2PJJJw6hnk",
+            authDomain: "web-salafypalembang.firebaseapp.com",
+            projectId: "web-salafypalembang",
+            storageBucket: "web-salafypalembang.firebasestorage.app",
+            messagingSenderId: "317519545482",
+            appId: "1:317519545482:web:064d0cb7ed723492371973"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentDocId = null;
+        let currentAdminEmail = "Admin";
+        let isSuperAdmin = false;
+        
+        let linkStreamUtama = "";
+        let linkStreamBackup = "";
+
+        let currentProfileDocId = null;
+        let cachedProfileData = null;
+
+        let preparedBase64Data = "";
+        let preparedFileName = "";
+        let statusHapusFotoTerpilih = false; 
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "admin-login.html";
+            } else {
+                currentAdminEmail = user.email;
+                const adminPrefix = user.email.split('@')[0];
+                document.getElementById('sidebar-admin-email').textContent = adminPrefix;
+                document.getElementById('welcome-title').textContent = `Ahlan wa Sahlan, ${adminPrefix}`;
+                
+                try {
+                    const adminDocRef = doc(db, "admins", user.uid);
+                    const adminDocSnap = await getDoc(adminDocRef);
+
+                    if (adminDocSnap.exists() && adminDocSnap.data().role === "super_admin") {
+                        isSuperAdmin = true;
+                        document.getElementById('sidebar-admin-role').textContent = "Super User";
+                        document.getElementById('config-panel-title').textContent = "Live Radio Configuration Panel (Super Admin Mode)";
+                    } else {
+                        isSuperAdmin = false;
+                        document.getElementById('sidebar-admin-role').textContent = "Ma'had Editor";
+                        document.getElementById('config-panel-title').textContent = "Live Radio Configuration Panel (Read-Only URL Mode)";
+                        proteksiKolomStreaming(); 
+                    }
+                } catch (err) {
+                    console.error(err);
+                    isSuperAdmin = false;
+                    proteksiKolomStreaming();
+                }
+
+                try {
+                    const qProfile = query(collection(db, "credit_title"), where("email", "==", user.email.toLowerCase()));
+                    const profileSnap = await getDocs(qProfile);
+
+                    if (!profileSnap.empty) {
+                        profileSnap.forEach((docSnap) => {
+                            currentProfileDocId = docSnap.id;
+                            cachedProfileData = docSnap.data();
+                            sinkronkanVisualProfilSistem(cachedProfileData);
+                        });
+                    }
+                } catch (pErr) {
+                    console.error(pErr);
+                }
+                
+                jalankanKalkulatorStatistik();
+                muatAktivitasTerakhir(); 
+                muatRunningTextLive(); 
+                muatKonfigurasiRadioLive(); 
+            }
+        });
+
+        function sinkronkanVisualProfilSistem(data) {
+            if(!data) return;
+            document.getElementById('sidebar-admin-email').textContent = data.Nama || currentAdminEmail.split('@')[0];
+            document.getElementById('sidebar-admin-role').textContent = data.Status || "Ma'had Staff";
+            
+            document.getElementById('sidebar-admin-avatar').src = data.url_gambar || "/logo-salafy.png";
+            
+            document.getElementById('dropdown-profile-name').textContent = data.Nama || "User";
+            document.getElementById('dropdown-profile-status').textContent = data.Status || "Staff";
+            
+            const headerAvatarImg = document.getElementById('header-admin-avatar');
+            if(data.url_gambar && data.url_gambar !== "/logo-salafy.png") {
+                headerAvatarImg.src = data.url_gambar;
+                headerAvatarImg.classList.remove('hidden');
+                document.getElementById('header-admin-icon-placeholder').classList.add('hidden');
+            } else {
+                headerAvatarImg.classList.add('hidden');
+                document.getElementById('header-admin-icon-placeholder').classList.remove('hidden');
+            }
+        }
+
+        window.bukaModalProfil = function() {
+            if(!cachedProfileData) {
+                alert("Data profil Anda belum terhubung di database. Silakan hubungi Super Admin untuk bantuan lebih lanjut.");
+                return;
+            }
+            document.getElementById('modal-profile-preview').src = cachedProfileData.url_gambar || "/logo-salafy.png";
+            document.getElementById('modal-profile-text-name').textContent = cachedProfileData.Nama || "-";
+            document.getElementById('modal-profile-text-status').textContent = cachedProfileData.Status || "-";
+            document.getElementById('modal-profile-text-email').textContent = cachedProfileData.email || currentAdminEmail;
+
+            document.getElementById('profile-input-nama').value = cachedProfileData.Nama || "";
+
+            document.getElementById('wrapper-uploader-zona').classList.add('hidden');
+            document.getElementById('profile-file-uploader').value = "";
+            preparedBase64Data = ""; preparedFileName = "";
+            statusHapusFotoTerpilih = false;
+
+            const btnHapus = document.getElementById('btn-action-delete-media');
+            if(!cachedProfileData.url_gambar || cachedProfileData.url_gambar === "/logo-salafy.png") {
+                btnHapus.classList.add('opacity-40', 'cursor-not-allowed');
+                btnHapus.disabled = true;
+            } else {
+                btnHapus.classList.remove('opacity-40', 'cursor-not-allowed');
+                btnHapus.disabled = false;
+            }
+
+            document.getElementById('userDropdownMenu').classList.add('hidden');
+            toggleProfileModal(true);
+        }
+
+        window.triggerPilihanMedia = function(opsi) {
+            const zonaUploader = document.getElementById('wrapper-uploader-zona');
+            const previewFoto = document.getElementById('modal-profile-preview');
+
+            if (opsi === 'ganti') {
+                statusHapusFotoTerpilih = false;
+                zonaUploader.classList.remove('hidden'); 
+                previewFoto.src = cachedProfileData.url_gambar || "/logo-salafy.png";
+            } 
+            else if (opsi === 'hapus') {
+                if(!confirm("Apakah Anda yakin ingin membuang foto Anda dan kembali menggunakan Logo Default Ma'had?")) return;
+                
+                statusHapusFotoTerpilih = true;
+                zonaUploader.classList.add('hidden'); 
+                document.getElementById('profile-file-uploader').value = ""; 
+                preparedBase64Data = ""; preparedFileName = "";
+
+                previewFoto.src = "/logo-salafy.png";
+            }
+        }
+
+        document.getElementById('profile-file-uploader').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+
+            const badge = document.getElementById('upload-status-badge');
+            const progressContainer = document.getElementById('github-progress-container');
+            const progressBar = document.getElementById('github-progress-bar');
+
+            const lastDotIndex = file.name.lastIndexOf('.');
+            const originalName = lastDotIndex !== -1 ? file.name.substring(0, lastDotIndex) : file.name;
+            const extension = lastDotIndex !== -1 ? file.name.substring(lastDotIndex + 1) : "jpg";
+
+            let parsedName = originalName.toLowerCase().replace(/\s+/g, '.');
+            parsedName = parsedName.replace(/[^a-z0-9.]/g, '');
+            preparedFileName = `photo.${parsedName}.${extension}`;
+
+            badge.textContent = "CONVERTING...";
+            badge.className = "text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold";
+            badge.classList.remove('hidden');
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                preparedBase64Data = reader.result.split(',')[1];
+                
+                badge.textContent = "READY TO SAVE";
+                badge.className = "text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded font-bold";
+                
+                document.getElementById('modal-profile-preview').src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('form-admin-profile').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!currentProfileDocId) return;
+            
+            const namaBaru = document.getElementById('profile-input-nama').value.trim();
+            
+            let urlGambarFinal = cachedProfileData.url_gambar || "/logo-salafy.png";
+            let idAsetGambarFinal = cachedProfileData.id_aset_gambar || null;
+
+            if (!confirm("Simpan perubahan pengaturan profile Anda sekarang?")) return;
+
+            const badge = document.getElementById('upload-status-badge');
+            const progressContainer = document.getElementById('github-progress-container');
+            const progressBar = document.getElementById('github-progress-bar');
+            const btnSubmit = document.getElementById('btn-submit-profile');
+
+            btnSubmit.disabled = true;
+
+            if (statusHapusFotoTerpilih) {
+                if (cachedProfileData && cachedProfileData.id_aset_gambar) {
+                    try {
+                        await fetch('/api/upload', {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ assetId: cachedProfileData.id_aset_gambar })
+                        });
+                    } catch (delErr) { 
+                        console.warn("Gagal membersihkan berkas lama di GitHub, lanjut reset lokal:", delErr); 
+                    }
+                }
+                urlGambarFinal = "/logo-salafy.png";
+                idAsetGambarFinal = null;
+            } 
+            // KONDISI B: JIKA INGIN BERGANTI FOTO BARU
+else if (preparedBase64Data !== "" && preparedFileName !== "") {
+    if (progressContainer) progressContainer.classList.remove('hidden');
+    if (progressBar) progressBar.style.width = "20%";
+    if (badge) badge.classList.remove('hidden');
+
+    // JALUR PEMBERSIHAN (NON-BLOCKING)
+    if (cachedProfileData && cachedProfileData.id_aset_gambar) {
+        if (badge) badge.textContent = "ATTEMPTING TO CLEAR OLD MEDIA...";
+        try {
+            fetch('/api/upload', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ assetId: cachedProfileData.id_aset_gambar })
+            }).catch(e => console.warn("Abaikan error hapus lama:", e));
+        } catch (delErr) { 
+            console.warn("Gagal request delete, lanjut ke upload:", delErr); 
+        }
+    }
+
+    if (progressBar) progressBar.style.width = "50%";
+    if (badge) badge.textContent = "UPLOADING NEW MEDIA...";
+
+    try {
+        const responseProxy = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                fileName: preparedFileName,
+                fileBase64: preparedBase64Data,
+                tagRelease: "v1.4" // <-- Menandakan backend untuk masuk ke rilis v1.4
+            })
+        });
+
+        if (progressBar) progressBar.style.width = "80%";
+        const responseText = await responseProxy.text();
+        let resultData = JSON.parse(responseText);
+
+        if (!responseProxy.ok || !resultData.success) {
+            throw new Error(resultData.error || "Gagal memproses unggahan di server biner.");
+        }
+
+        urlGambarFinal = resultData.githubUrl;
+        idAsetGambarFinal = resultData.assetId;
+
+    } catch (uploadError) {
+        alert(`❌ Hubungan Ke Server Terputus:\n${uploadError.message}`);
+        btnSubmit.disabled = false;
+        if (progressContainer) progressContainer.classList.add('hidden');
+        if (badge) badge.classList.add('hidden');
+        return;
+    }
+}
+            try {
+                await updateDoc(doc(db, "credit_title", currentProfileDocId), {
+                    Nama: namaBaru,
+                    url_gambar: urlGambarFinal,
+                    id_aset_gambar: idAsetGambarFinal
+                });
+
+                cachedProfileData.Nama = namaBaru;
+                cachedProfileData.url_gambar = urlGambarFinal;
+                cachedProfileData.id_aset_gambar = idAsetGambarFinal;
+
+                sinkronkanVisualProfilSistem(cachedProfileData);
+                
+                if (progressBar) progressBar.style.width = "100%";
+                btnSubmit.disabled = false;
+                
+                setTimeout(() => {
+                    if (progressContainer) progressContainer.classList.add('hidden');
+                    if (badge) badge.classList.add('hidden');
+                }, 1000);
+
+                toggleProfileModal(false);
+                await catatAktivitasKeFirebase(`Mengatur Data Profil Personal Admin`, "Admin Management");
+                alert("✔ Sinkronisasi data sukses disimpan ke Database!");
+
+            } catch(err) {
+                console.error(err);
+                alert("Gagal memperbarui database.");
+                btnSubmit.disabled = false;
+            }
+        });
+
+        function proteksiKolomStreaming() {
+            const inputUtama = document.getElementById('radio-url-utama');
+            const inputBackup = document.getElementById('radio-url-backup');
+            if (inputUtama) inputUtama.disabled = true;
+            if (inputBackup) inputBackup.disabled = true;
+            document.getElementById('lock-badge-utama').classList.remove('hidden');
+            document.getElementById('lock-badge-backup').classList.remove('hidden');
+        }
+
+        async function catatAktivitasKeFirebase(tindakan, modul) {
+            try {
+                await addDoc(collection(db, "logs"), {
+                    action: tindakan,
+                    module: modul,
+                    operator: currentAdminEmail.split('@')[0],
+                    tanggal: new Date(),
+                    status: "Published"
+                });
+                muatAktivitasTerakhir();
+            } catch (err) { console.error(err); }
+        }
+
+        async function jalankanKalkulatorStatistik() {
+            try {
+                const qArtikel = await getDocs(collection(db, "artikel"));
+                document.getElementById('stat-articles').textContent = qArtikel.size;
+                const qAudio = await getDocs(collection(db, "audio"));
+                document.getElementById('stat-audio').textContent = qAudio.size;
+                const qPosters = await getDocs(collection(db, "poster"));
+                document.getElementById('stat-posters').textContent = qPosters.size;
+                const qHadits = await getDocs(collection(db, "hadits"));
+                document.getElementById('stat-hadits').textContent = qHadits.size;
+            } catch (error) { console.error(error); }
+        }
+
+        async function muatAktivitasTerakhir() {
+            const tableBody = document.getElementById('activity-table-body');
+            try {
+                const q = query(collection(db, "logs"), orderBy("tanggal", "desc"), limit(6));
+                const snap = await getDocs(q);
+                if(snap.empty) {
+                    tableBody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-gray-400">Belum ada riwayat aktivitas log.</td></tr>`;
+                    return;
+                }
+                tableBody.innerHTML = "";
+                snap.forEach((doc) => {
+                    const data = doc.data();
+                    let waktuStr = "Baru saja";
+                    if (data.tanggal) {
+                        const tgl = data.tanggal.toDate ? data.tanggal.toDate() : new Date(data.tanggal);
+                        waktuStr = tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) + ' ' + tgl.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                    }
+                    tableBody.innerHTML += `
+                        <tr class="hover:bg-surface-container-lowest transition-colors h-14 activity-row">
+                            <td class="px-4 py-3 font-medium text-gray-800 action-cell">${data.action}</td>
+                            <td class="px-4 py-3 text-on-surface-variant">${data.module}</td>
+                            <td class="px-4 py-3 text-on-surface-variant text-[11px]">${waktuStr}</td>
+                            <td class="px-4 py-3">
+                                <span class="px-2.5 py-0.5 bg-secondary-container text-on-secondary-fixed-variant text-[10px] font-bold rounded-full uppercase">${data.status || 'Published'}</span>
+                            </td>
+                        </tr>`;
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        async function muatRunningTextLive() {
+            const marqueeContainer = document.getElementById('live-marquee');
+            try {
+                const q = query(collection(db, "informasi"), limit(1));
+                const querySnapshot = await getDocs(q);
+                if (!querySnapshot.empty) {
+                    querySnapshot.forEach((docSnap) => {
+                        currentDocId = docSnap.id;
+                        marqueeContainer.textContent = docSnap.data().Informasi;
+                    });
+                } else {
+                    currentDocId = null;
+                    marqueeContainer.textContent = "Belum ada maklumat pengumuman aktif.";
+                }
+            } catch (err) { marqueeContainer.textContent = "Gagal memproses pengumuman."; }
+        }
+
+        document.getElementById('form-running-text').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const teksBaru = document.getElementById('input-marquee-text').value.trim();
+            if (!confirm("Apakah Anda yakin ingin melanjutkan perubahan pengumuman teks berjalan ini?")) return;
+            try {
+                if (currentDocId) {
+                    await updateDoc(doc(db, "informasi", currentDocId), { Informasi: teksBaru });
+                } else {
+                    const docRefBaru = await addDoc(collection(db, "informasi"), { Informasi: teksBaru });
+                    currentDocId = docRefBaru.id;
+                }
+                document.getElementById('live-marquee').textContent = teksBaru;
+                toggleRunningTextModal(false);
+                await catatAktivitasKeFirebase("Memicu Perubahan Teks Info", "Schedules");
+                alert("✔ Berhasil diperbarui!");
+            } catch (err) { console.error(err); }
+        });
+
+        window.hapusRunningText = async function() {
+            if (!currentDocId) return;
+            if (confirm("Kosongkan maklumat teks berjalan?")) {
+                try {
+                    await deleteDoc(doc(db, "informasi", currentDocId));
+                    currentDocId = null;
+                    document.getElementById('live-marquee').textContent = "Belum ada maklumat pengumuman aktif.";
+                    await catatAktivitasKeFirebase("Menghapus Teks Info Utama", "Schedules");
+                    alert("✔ Berhasil dikosongkan.");
+                } catch (err) { console.error(err); }
+            }
+        }
+
+        window.bukaModalRunningText = function() {
+            toggleRunningTextModal(true);
+            const inputField = document.getElementById('input-marquee-text');
+            const txt = document.getElementById('live-marquee').textContent;
+            if (inputField) inputField.value = (txt.includes("Memuat") || txt.includes("Belum ada")) ? "" : txt;
+        }
+
+        const docRefRadio = doc(db, "config_apps", "radio_stream");
+        const playerAudio = document.getElementById('audio-preview-element');
+
+        async function muatKonfigurasiRadioLive() {
+            try {
+                const snapshot = await getDoc(docRefRadio);
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    document.getElementById('radio-judul').value = data.Judul || "";
+                    document.getElementById('radio-pemateri').value = data.Pemateri || "";
+                    document.getElementById('radio-url-utama').value = data.url_utama || "";
+                    document.getElementById('radio-url-backup').value = data.url_backup || "";
+                    document.getElementById('preview-judul').textContent = data.Judul || "Radio Streaming Aktif";
+                    document.getElementById('preview-pemateri').querySelector('span:nth-child(2)').textContent = data.Pemateri || "Asatidzah Ma'had";
+                    linkStreamUtama = data.url_utama || "";
+                    linkStreamBackup = data.url_backup || "";
+                    if(linkStreamUtama && playerAudio) {
+                        playerAudio.src = linkStreamUtama;
+                        document.getElementById('player-status').textContent = "Server Utama Ready";
+                    }
+                } else {
+                    document.getElementById('player-status').textContent = "Unconfigured";
+                }
+            } catch (err) { console.error("Gagal memetakan konfigurasi radio stream: ", err); }
+        }
+
+        document.getElementById('form-radio-config').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if (!confirm("Apakah Anda yakin ingin melanjutkan sinkronisasi parameter Radio Stream ini ke server?")) return;
+            const radioJudul = document.getElementById('radio-judul').value.trim();
+            const radioPemateri = document.getElementById('radio-pemateri').value.trim();
+            let urlUtama = linkStreamUtama;
+            let urlBackup = linkStreamBackup;
+            if (isSuperAdmin) {
+                urlUtama = document.getElementById('radio-url-utama').value.trim();
+                urlBackup = document.getElementById('radio-url-backup').value.trim();
+            }
+            try {
+                await setDoc(docRefRadio, {
+                    Judul: radioJudul,
+                    Pemateri: radioPemateri,
+                    url_utama: urlUtama,
+                    url_backup: urlBackup
+                }, { merge: true });
+                document.getElementById('preview-judul').textContent = radioJudul;
+                document.getElementById('preview-pemateri').querySelector('span:nth-child(2)').textContent = radioPemateri;
+                linkStreamUtama = urlUtama;
+                linkStreamBackup = urlBackup;
+                if (playerAudio) playerAudio.src = urlUtama; 
+                await catatAktivitasKeFirebase(`Mengubah Mengudara Radio: "${radioJudul}"`, "Audio");
+                alert("✔ Sukses! Parameter penyiaran Radio Stream berhasil disinkronkan ke Database.");
+            } catch (err) { alert("Gagal mengunggah konfigurasi radio stream."); console.error(err); }
+        });
+
+        window.muatSumberAudio = function(jalur) {
+            if (!playerAudio) return;
+            if(jalur === 'utama') {
+                if(!linkStreamUtama) { alert("Link utama kosong."); return; }
+                playerAudio.src = linkStreamUtama;
+                playerAudio.play().catch(()=>{});
+                document.getElementById('player-status').textContent = "Server Utama Terpilih";
+            } else {
+                if(!linkStreamBackup) { alert("Link backup kosong."); return; }
+                playerAudio.src = linkStreamBackup;
+                playerAudio.play().catch(()=>{});
+                document.getElementById('player-status').textContent = "Server Backup Terpilih";
+            }
+        }
+
+        window.logoutAdmin = function() {
+            if (confirm("Keluar dari konsol admin Salafy Palembang?")) {
+                signOut(auth).then(() => { window.location.href = "admin-login.html"; });
+            }
+        }
+    </script>
+
+    <script>
+        document.getElementById('dashboard-search').addEventListener('keyup', function(e) {
+            const keyword = e.target.value.toLowerCase().trim();
+            document.querySelectorAll('.activity-row').forEach(row => {
+                const txt = row.querySelector('.action-cell').textContent.toLowerCase();
+                row.style.display = txt.includes(keyword) ? "" : "none";
+            });
+        });
+
+        function toggleNotificationDropdown(event) {
+            event.stopPropagation(); 
+            document.getElementById('userDropdownMenu').classList.add('hidden');
+            document.getElementById('notificationDropdown').classList.toggle('hidden');
+        }
+
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            document.getElementById('notificationDropdown').classList.add('hidden');
+            document.getElementById('userDropdownMenu').classList.toggle('hidden');
+        }
+
+        function toggleSettingsModal(show) {
+            const modal = document.getElementById('settingsModal');
+            show ? modal.classList.remove('hidden') : modal.classList.add('hidden');
+        }
+
+        function toggleRunningTextModal(show) {
+            const modal = document.getElementById('runningTextModal');
+            show ? modal.classList.remove('hidden') : modal.classList.add('hidden');
+        }
+
+        function toggleProfileModal(show) {
+            const modal = document.getElementById('profileModal');
+            show ? modal.classList.remove('hidden') : modal.classList.add('hidden');
+        }
+
+        window.addEventListener('click', function() {
+            document.getElementById('notificationDropdown').classList.add('hidden');
+            document.getElementById('userDropdownMenu').classList.add('hidden');
+        });
+
+        const dateElement = document.getElementById('current-date');
+        const hijriElement = document.getElementById('hijri-date');
+        const hariIni = new Date();
+        dateElement.textContent = hariIni.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        try {
+            const formatterHijriyah = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', { year: 'numeric', month: 'long', day: 'numeric' });
+            hijriElement.innerHTML = `<span class="material-symbols-outlined text-[10px]">dark_mode</span><span>${formatterHijriyah.format(hariIni)} H</span>`;
+        } catch (e) { hijriElement.textContent = ""; }
+    </script>
+</body>
+</html>

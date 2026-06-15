@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Media Management - Salafy Palembang</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hanken+Grotesk:wght@600;700&family=Geist:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab-indicator {
+            view-transition-name: active-tab;
+        }
+        body {
+            background-color: #f9f9ff;
+            color: #151c27;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#dce2f3",
+                      "surface-container-low": "#f0f3ff",
+                      "surface": "#f9f9ff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "surface-tint": "#2b6954",
+                      "surface-bright": "#f9f9ff",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-high": "#e2e8f8",
+                      "tertiary-container": "#623c00",
+                      "outline": "#707974",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#ebf1ff",
+                      "on-primary-container": "#80bea6",
+                      "tertiary-fixed": "#ffddb8",
+                      "primary-fixed-dim": "#95d3ba",
+                      "secondary-fixed": "#6ffbbe",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#6cf8bb",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed": "#2a1700",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#dce2f3",
+                      "on-surface-variant": "#404944",
+                      "tertiary": "#442800",
+                      "secondary": "#006c49",
+                      "inverse-surface": "#2a313d",
+                      "on-tertiary-container": "#f69f0d",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "surface-container": "#e7eefe",
+                      "background": "#f9f9ff",
+                      "primary-fixed": "#b0f0d6",
+                      "primary-container": "#064e3b",
+                      "on-surface": "#151c27",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "inverse-primary": "#95d3ba",
+                      "secondary-fixed-dim": "#4edea3",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed": "#002113",
+                      "on-primary-fixed-variant": "#0b513d",
+                      "primary": "#003527",
+                      "on-background": "#151c27",
+                      "on-secondary-container": "#00714d",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#002117",
+                      "surface-dim": "#d3daea",
+                      "outline-variant": "#bfc9c3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack-md": "16px",
+                      "container-padding": "32px",
+                      "base": "4px",
+                      "stack-sm": "8px",
+                      "stack-lg": "32px",
+                      "sidebar-width": "280px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "title-md": ["Hanken Grotesk"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-md": ["Geist"],
+                      "label-sm": ["Geist"],
+                      "headline-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="font-body-md text-on-surface bg-background min-h-screen">
+<!-- SideNavBar Component -->
+<aside class="w-[280px] h-screen fixed left-0 top-0 bg-primary flex flex-col py-stack-lg border-r border-outline-variant z-20">
+<div class="px-6 mb-8">
+<h1 class="font-headline-lg text-headline-lg text-on-primary">Salafy Palembang</h1>
+<p class="font-label-md text-label-md text-on-primary-container opacity-80">Admin Console</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="article">article</span>
+                Articles
+            </a>
+<!-- Active Tab: Audio/Media (Simplified mapping to 'Audio' for this context) -->
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-secondary-fixed border-l-4 border-secondary-fixed bg-on-primary-fixed-variant transition-transform active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="mic_external_on">mic_external_on</span>
+                Audio
+            </a>
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="image">image</span>
+                Posters
+            </a>
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="quiz">quiz</span>
+                Q&A
+            </a>
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="event_note">event_note</span>
+                Study Schedules
+            </a>
+<div class="pt-4 mt-4 border-t border-primary-container/30">
+<a class="flex items-center px-6 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-4" data-icon="manage_accounts">manage_accounts</span>
+                    Admin Management
+                </a>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 p-3 bg-primary-container rounded-lg">
+<img alt="Salafy Palembang Logo" class="w-10 h-10 rounded-full border border-secondary-fixed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvGYThws2syJQbhSMcXC8ueYZV87zieSrSJVZjKUQvPHSe4AnwRpEcE7XQJ-I7Q3dv2F-MUspBi3MyitpGqTxAKkFuBIcn3hJkpQ5Eqnb6NEh-KZ0K5btsMhUBxBHskm-vmjsG27BJH7k-08u_YkwKJIt4pYmMqH9HQMBfhr9b6ucaQrunJPIGTI5g2Jx0MSTchxzRucviJW1ECtSDSus271-ZtjRtDSbEstiMFTnm1wsFvezPBD7gm4LgmuNxGu3SuFAeaXP9z5nb"/>
+<div class="overflow-hidden">
+<p class="text-on-primary text-sm font-semibold truncate">Administrator</p>
+<p class="text-on-primary-container text-xs truncate">Super Admin Access</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="ml-[280px] min-h-screen flex flex-col">
+<!-- TopAppBar Component -->
+<header class="full-width h-16 sticky top-0 z-10 bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">Media Management</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<div class="flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant focus-within:ring-2 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-64 font-body-md" placeholder="Search media..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<img alt="Admin Profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr5tpflB51ryclR4znRhsXoNg5hUHnJYamxSyqQ8jJ-x373Blr5-xAFw-03tPhjLgeGHbNu-9L2tJDf3IKb3k8fv537fL_y8ERGb_ByMM0MijJ_8QLcoQdKq191Vendqhcqyh6c8QXPwuAXMuKu5qe2lUSEXuoq_EgjVFxZppC3wZo6sspWya6yPcf233t--gh3Sdk8lJRxlih7yore2Fm6xw3HtAJsoSqGIY0Dalcvt-VDv7IG5j1Fsg98FThAnwhhroG5nHw88eK"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="p-container-padding flex-1">
+<!-- Tab Switcher & Upload Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md mb-stack-lg">
+<div class="flex border-b border-outline-variant">
+<button class="px-8 py-4 font-title-md text-title-md border-b-2 border-primary text-primary transition-all" id="tab-audio" onclick="switchTab('audio')">
+                        Audio Tracks
+                    </button>
+<button class="px-8 py-4 font-title-md text-title-md border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-all" id="tab-posters" onclick="switchTab('posters')">
+                        Posters
+                    </button>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded flex items-center gap-2 font-label-md text-label-md active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="upload">upload</span>
+                    Upload New Media
+                </button>
+</div>
+<!-- Content Grid: Audio (Visible by default) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter" id="content-audio">
+<!-- Audio Card 1 -->
+<div class="bg-white border border-outline-variant p-stack-md flex items-center gap-4 hover:shadow-lg hover:shadow-black/5 transition-all group">
+<div class="w-16 h-16 bg-surface-container-high rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="graphic_eq">graphic_eq</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-title-md text-title-md truncate">Kajian Kitab Tauhid - Pertemuan 45</h3>
+<div class="flex items-center gap-3 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 45:12
+                            </span>
+<span class="px-2 py-0.5 bg-on-secondary-container/10 text-on-secondary-container font-label-sm text-label-sm rounded uppercase tracking-wider">Published</span>
+</div>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Audio Card 2 -->
+<div class="bg-white border border-outline-variant p-stack-md flex items-center gap-4 hover:shadow-lg hover:shadow-black/5 transition-all group">
+<div class="w-16 h-16 bg-surface-container-high rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="mic">mic</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-title-md text-title-md truncate">Nasehat Singkat: Akhlak Penuntut Ilmu</h3>
+<div class="flex items-center gap-3 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 12:05
+                            </span>
+<span class="px-2 py-0.5 bg-surface-variant text-on-surface-variant font-label-sm text-label-sm rounded uppercase tracking-wider">Draft</span>
+</div>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+<!-- Audio Card 3 -->
+<div class="bg-white border border-outline-variant p-stack-md flex items-center gap-4 hover:shadow-lg hover:shadow-black/5 transition-all group">
+<div class="w-16 h-16 bg-surface-container-high rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-4xl" data-icon="graphic_eq">graphic_eq</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-title-md text-title-md truncate">Faqih fi Dien - Sesi Tanya Jawab</h3>
+<div class="flex items-center gap-3 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span> 1:12:30
+                            </span>
+<span class="px-2 py-0.5 bg-on-secondary-container/10 text-on-secondary-container font-label-sm text-label-sm rounded uppercase tracking-wider">Published</span>
+</div>
+</div>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<!-- Content Grid: Posters (Hidden by default) -->
+<div class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter" id="content-posters">
+<!-- Poster Card 1 -->
+<div class="bg-white border border-outline-variant overflow-hidden group hover:shadow-lg transition-all">
+<div class="aspect-[4/5] bg-surface-container-high relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professionally designed Islamic typography poster with elegant calligraphy on a minimalist dark emerald background. The composition follows modern corporate aesthetic with clean lines and balanced white space, reflecting a spiritual and authoritative tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnOvqR0xwHo8KBMuVp3FD-KLbqAXGb12k3n-y6nixiCp8WZPxaFuSQGHZysYSrxIJ7F51NVIAHRrkHKziYmwqbubnNElhyvD0IYcnqpFenVwd-eWHAlmcc6JMti9Bd-7qW7MBneFRuV6nVK3bl2sFwvA8WozsvHFZuCfs2ptFKKoI1MZAaAiuMY-nNlbrysgi9ciHxJBVOiTK3kqRDWVZsFh19R_Skh4S3Klk0F9WveVAZo7NyoboweWcf_fNunBMMqxEBSdDjyPnR"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="bg-white text-primary p-2 rounded-full mx-1">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+<button class="bg-error text-on-error p-2 rounded-full mx-1">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-label-md text-label-md truncate">Jadwal Kajian Rutin Masjid</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Uploaded 2 days ago</p>
+</div>
+</div>
+<!-- Poster Card 2 -->
+<div class="bg-white border border-outline-variant overflow-hidden group hover:shadow-lg transition-all">
+<div class="aspect-[4/5] bg-surface-container-high relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist architectural poster featuring geometric shapes and light play. The style is modern corporate with a serene palette of off-white and deep greens. The lighting is soft and directional, highlighting textures and clean architectural lines in a spiritual management context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7zNuK-6pozkHGf5FWQq8b9tUK5lXToU9zgyhgjoaoYSCvksw2Ta2a1ClCAPIyeHcK5uS0xqqQAXcX8uJDGG-4ulPsDn5NBUSteRDULgVf7FIe4-65W9I1q3LWt0itmqagKyXVMzsIv2MM_kwYRDfb3mv4xXDrve6WhZheneL2KvJBqq22O8AHl6SVZgFhUEq138yNgxrvK5Z6nIoLKaARuQ0N0vDE5W4dbzrMkXv4NCL_l1S1nemNsaAH4QjqPGKtOuUmHK8Mj4At"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="bg-white text-primary p-2 rounded-full mx-1">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+<button class="bg-error text-on-error p-2 rounded-full mx-1">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-label-md text-label-md truncate">Poster Ramadhan 1445H</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Uploaded 1 week ago</p>
+</div>
+</div>
+<!-- Poster Card 3 -->
+<div class="bg-white border border-outline-variant overflow-hidden group hover:shadow-lg transition-all">
+<div class="aspect-[4/5] bg-surface-container-high relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High-quality Islamic graphic design with sophisticated geometric patterns and a central focus area. The color scheme is based on deep primary greens and subtle gold accents. The overall look is professional, calm, and progressive, suitable for an administrative media management interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4hd6QmZS4Vt3DKRjMvJcC8VgIwvtckbW5Vr1hqsb8obS-vx0ibRUjA8Mv9jfc-4gOcyEi9BkTrrtL0JfQDP1kATfoZdy7SSxYESMQI1mgFkWRfFRUFQmGeOLDOs78LFkz8AhgnNwlEbq-t9ryFXlvD_Rum36FOE7EVNvfcIsK8x_Oo-j0ZnqcQyWIG55e3Ug_bKoUz3AHdgNvuN58ngmNXAsYc99F9IqkA9BpF39OR4RTAte0arF8s2rKGYTPjAm7nz_OccKGvzX3"/>
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<button class="bg-white text-primary p-2 rounded-full mx-1">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+<button class="bg-error text-on-error p-2 rounded-full mx-1">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4">
+<h3 class="font-label-md text-label-md truncate">Donasi Pembangunan Tahfidz</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Uploaded 3 days ago</p>
+</div>
+</div>
+<!-- Empty Upload State -->
+<label class="border-2 border-dashed border-outline-variant flex flex-col items-center justify-center p-8 cursor-pointer hover:border-secondary transition-colors text-center aspect-[4/5] bg-surface-container-lowest">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-4" data-icon="add_photo_alternate">add_photo_alternate</span>
+<span class="font-label-md text-label-md text-on-surface">Click to upload poster</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant mt-2">JPG, PNG up to 10MB</span>
+<input class="hidden" type="file"/>
+</label>
+</div>
+</main>
+<!-- Stats Footer Section -->
+<footer class="p-container-padding bg-surface-container-low border-t border-outline-variant mt-auto">
+<div class="flex flex-wrap gap-8">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-primary-container/20 rounded-full">
+<span class="material-symbols-outlined text-primary" data-icon="storage">storage</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Storage Used</p>
+<p class="font-title-md text-title-md">12.4 GB / 50 GB</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="p-3 bg-secondary-container/20 rounded-full">
+<span class="material-symbols-outlined text-secondary" data-icon="equalizer">equalizer</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Monthly Downloads</p>
+<p class="font-title-md text-title-md">4,281 Hits</p>
+</div>
+</div>
+<div class="ml-auto flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_#6ffbbe]"></span>
+<span class="font-label-md text-label-md text-on-surface-variant">Systems Operational</span>
+</div>
+</div>
+</footer>
+</div>
+<script>
+        function switchTab(type) {
+            const audioBtn = document.getElementById('tab-audio');
+            const postersBtn = document.getElementById('tab-posters');
+            const audioContent = document.getElementById('content-audio');
+            const postersContent = document.getElementById('content-posters');
+
+            if (type === 'audio') {
+                audioBtn.classList.add('border-primary', 'text-primary');
+                audioBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+                postersBtn.classList.remove('border-primary', 'text-primary');
+                postersBtn.classList.add('border-transparent', 'text-on-surface-variant');
+                
+                audioContent.classList.remove('hidden');
+                postersContent.classList.add('hidden');
+            } else {
+                postersBtn.classList.add('border-primary', 'text-primary');
+                postersBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+                audioBtn.classList.remove('border-primary', 'text-primary');
+                audioBtn.classList.add('border-transparent', 'text-on-surface-variant');
+                
+                postersContent.classList.remove('hidden');
+                audioContent.classList.add('hidden');
+            }
+        }
+
+        // Simple row highlight micro-interaction
+        document.querySelectorAll('.group').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-2px)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>

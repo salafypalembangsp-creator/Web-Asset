@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login | Salafy Palembang Admin Console</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500&family=Geist:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#00714d",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "surface": "#f9f9ff",
+                        "on-secondary-fixed": "#002113",
+                        "surface-container-highest": "#dce2f3",
+                        "on-surface-variant": "#404944",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#95d3ba",
+                        "tertiary-fixed": "#ffddb8",
+                        "on-background": "#151c27",
+                        "surface-dim": "#d3daea",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-surface": "#2a313d",
+                        "surface-container-high": "#e2e8f8",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#151c27",
+                        "background": "#f9f9ff",
+                        "surface-variant": "#dce2f3",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-tertiary-container": "#f69f0d",
+                        "primary-fixed": "#b0f0d6",
+                        "inverse-primary": "#95d3ba",
+                        "surface-tint": "#2b6954",
+                        "outline-variant": "#bfc9c3",
+                        "inverse-on-surface": "#ebf1ff",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#6cf8bb",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#006c49",
+                        "tertiary": "#442800",
+                        "surface-bright": "#f9f9ff",
+                        "on-primary-container": "#80bea6",
+                        "tertiary-container": "#623c00",
+                        "surface-container": "#e7eefe",
+                        "on-primary-fixed": "#002117",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-container-low": "#f0f3ff",
+                        "outline": "#707974",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#064e3b",
+                        "primary": "#003527",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "sidebar-width": "280px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "container-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-sm": ["Geist"],
+                        "title-md": ["Hanken Grotesk"],
+                        "label-md": ["Geist"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .serene-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(#003527 0.5px, transparent 0.5px), radial-gradient(#003527 0.5px, #ffffff 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.02;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(to right, rgba(0, 53, 39, 0.9), rgba(0, 53, 39, 0.4));
+        }
+
+        .input-focus-ring:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 53, 39, 0.1);
+            border-color: #003527;
+        }
+
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md h-screen flex overflow-hidden">
+
+<div class="flex w-full h-full">
+    <section class="hidden lg:flex lg:w-3/5 relative overflow-hidden bg-primary">
+        <img class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity" src="masjid-as-salam.jpeg"/>
+        <div class="absolute inset-0 hero-overlay"></div>
+        <div class="relative z-10 p-16 flex flex-col justify-between h-full text-white">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden">
+                    <img src="logo-salafy.png" alt="Logo" class="w-full h-full object-contain">
+                </div>
+                <span class="font-headline-lg text-xl tracking-tight">Salafy Palembang</span>
+            </div>
+            <div class="max-w-xl">
+                <h2 class="font-display-lg text-4xl mb-6 font-bold leading-tight">Mengokohkan Manhaj Salaf, Tegak Di Atas Al-Qur'an dan As-Sunnah</h2>
+                <p class="font-body-lg text-white/80 leading-relaxed text-base">
+                    Portal internal pengelola dakwah Salafy Palembang. Ruang koordinasi aman untuk menyajikan informasi dan bimbingan islam berdasarkan pemahaman salafush shalih.
+                </p>
+            </div>
+            <div class="flex items-center space-x-8 text-sm font-label-md text-white/60">
+                <div class="flex items-center space-x-2">
+                    <span class="material-symbols-outlined text-lg">verified_user</span>
+                    <span>Secure End-to-End Encryption</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="material-symbols-outlined text-lg">update</span>
+                    <span>v2.4.0 Stable</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="w-full lg:w-2/5 flex flex-col relative lg:bg-white bg-primary justify-center px-8 sm:px-16 lg:px-20 overflow-y-auto py-8">
+        
+        <div class="lg:hidden absolute inset-0 z-0 overflow-hidden">
+            <img class="w-full h-full object-cover opacity-60 mix-blend-luminosity" src="masjid-as-salam.jpeg" alt="Mobile Background"/>
+            <div class="absolute inset-0 bg-gradient-to-b from-[#003527]/95 via-[#003527]/85 to-[#002117]/95"></div>
+        </div>
+        
+        <div class="hidden lg:block absolute inset-0 serene-pattern pointer-events-none"></div>
+        
+        <div class="relative z-10 w-full flex flex-col justify-center my-auto">
+            <div class="lg:hidden flex flex-col items-center mb-6 text-center text-white pt-6">
+                <div class="h-14 max-w-[200px] flex items-center justify-center mb-4">
+                    <img src="logo-salafy.png" alt="Logo" class="w-full h-full object-contain">
+                </div>
+                <h1 class="font-display-lg text-2xl font-bold tracking-tight">Salafy Palembang</h1>
+                <p class="text-white/60 font-label-sm text-[10px] mt-0.5 tracking-wider uppercase">Portal Admin</p>
+            </div>
+
+            <div class="mb-6 text-left">
+                <h2 class="font-headline-lg text-2xl lg:text-headline-lg lg:text-on-surface text-white mb-1">Marhaban, Admin</h2>
+                <p class="lg:text-on-surface-variant text-white/70 font-body-md text-sm">Harap masukkan email dan password Anda.</p>
+            </div>
+            
+            <div class="lg:bg-transparent bg-white/10 lg:backdrop-blur-none backdrop-blur-md lg:p-0 p-6 lg:border-0 border border-white/10 rounded-2xl shadow-xl lg:shadow-none">
+                <form class="space-y-6" id="loginForm" autocomplete="off">
+                    <div>
+                        <label class="block font-label-md text-label-md lg:text-on-surface text-white/90 mb-2" for="email">Alamat Email</label>
+                        <div class="relative group">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-primary transition-colors">alternate_email</span>
+                            <input class="w-full pl-12 pr-4 py-3.5 bg-white border border-outline-variant rounded-xl font-body-md input-focus-ring transition-all placeholder:text-gray-400 text-gray-900" id="email" placeholder="admin@salafypalembang.com" required="" type="email"/>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="block font-label-md text-label-md lg:text-on-surface text-white/90" for="password">Password</label>
+                            <button type="button" onclick="toggleAdminModal(true)" class="text-sm font-label-md lg:text-secondary text-emerald-300 hover:underline transition-colors focus:outline-none">Lupa Password?</button>
+                        </div>
+                        <div class="relative group">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-primary transition-colors">lock</span>
+                            <input class="w-full pl-12 pr-12 py-3.5 bg-white border border-outline-variant rounded-xl font-body-md input-focus-ring transition-all text-gray-900 placeholder:text-gray-400" id="password" placeholder="••••••••" required="" type="password"/>
+                            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-800 transition-colors" onclick="togglePassword()" type="button">
+                                <span class="material-symbols-outlined" id="passwordIcon">visibility_off</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <input class="w-4 h-4 text-primary border-grey/20 rounded focus:ring-primary/20 bg-white" id="remember" type="checkbox"/>
+                        <label class="ml-2 font-label-md lg:text-on-surface-variant text-white/80 text-sm" for="remember">Ingat saya</label>
+                    </div>
+                    
+                    <button class="w-full lg:bg-primary bg-white lg:text-white text-primary hover:bg-primary-container lg:hover:text-white font-title-md py-4 rounded-xl shadow-lg transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2 font-semibold" type="submit">
+                        <span>Masuk ke Dashboard</span>
+                        <span class="material-symbols-outlined text-xl">login</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="mt-12 pt-6 border-t lg:border-surface-variant border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="font-label-sm text-xs lg:text-outline text-white/40">© 2026 Creative Ibanah Dev. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a class="font-label-sm text-xs lg:text-secondary text-white/60 hover:underline" href="#">Help & Support</a>
+                    <a class="font-label-sm text-xs lg:text-secondary text-white/60 hover:underline" href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div class="fixed inset-0 bg-[#002117]/60 backdrop-blur-sm z-50 flex items-center justify-center hidden" id="superAdminModal" onclick="toggleAdminModal(false)">
+    <div class="bg-white rounded-2xl max-w-sm w-full mx-4 p-6 shadow-2xl border border-outline-variant/30 text-center animate-in zoom-in-95 duration-200 relative z-10 text-gray-900" onclick="event.stopPropagation()">
+        <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-100">
+            <span class="material-symbols-outlined text-emerald-800 text-3xl" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+        </div>
+        <h3 class="font-headline-lg text-xl font-bold text-primary mb-2">Hubungi Super Admin</h3>
+        <p class="text-sm text-gray-600 leading-relaxed mb-6">
+            Demi menjaga keamanan otoritas data Website, pengaturan ulang kata sandi dilakukan secara tertutup. Silakan koordinasi langsung dengan **Super Admin** untuk me-reset akun Anda.
+        </p>
+        <button type="button" onclick="toggleAdminModal(false)" class="w-full bg-primary text-white font-title-md py-3 rounded-xl shadow-md hover:bg-primary-container transition-all font-semibold focus:outline-none">
+            Saya Mengerti
+        </button>
+    </div>
+</div>
+
+<div class="fixed inset-0 bg-primary/40 backdrop-blur-md z-50 flex flex-col items-center justify-center hidden" id="loadingOverlay">
+    <div class="glass-effect p-12 rounded-3xl flex flex-col items-center shadow-2xl" id="loadingContent">
+        <div class="w-16 h-16 border-4 border-primary-fixed-dim border-t-primary rounded-full animate-spin mb-6"></div>
+        <p class="font-title-md text-title-md text-primary">Authenticating Identity...</p>
+        <p class="text-on-surface-variant text-sm mt-2 font-label-md">Please wait while we secure your session</p>
+    </div>
+</div>
+
+<script>
+    // Fungsi Toggle Password
+    function togglePassword() {
+        const pwdInput = document.getElementById('password');
+        const icon = document.getElementById('passwordIcon');
+        
+        if (pwdInput.type === 'password') {
+            pwdInput.type = 'text';
+            icon.innerText = 'visibility'; 
+        } else {
+            pwdInput.type = 'password';
+            icon.innerText = 'visibility_off'; 
+        }
+    }
+
+    // FUNGSI BARU: Buka & Tutup Pop Up Hubungi Super Admin
+    function toggleAdminModal(show) {
+        const modal = document.getElementById('superAdminModal');
+        if (show) {
+            modal.classList.remove('hidden');
+        } else {
+            modal.classList.add('hidden');
+        }
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDvfU5f2B6TVjAtx3qmjqngM2PJJJw6hnk",
+        authDomain: "web-salafypalembang.firebaseapp.com",
+        projectId: "web-salafypalembang",
+        storageBucket: "web-salafypalembang.firebasestorage.app",
+        messagingSenderId: "317519545482",
+        appId: "1:317519545482:web:064d0cb7ed723492371973"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('remember').checked;
+        const overlay = document.getElementById('loadingOverlay');
+        const loadingContent = document.getElementById('loadingContent');
+        
+        overlay.classList.remove('hidden');
+
+        try {
+            const tipePersistensi = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+            await setPersistence(auth, tipePersistensi);
+
+            await signInWithEmailAndPassword(auth, email, password);
+
+            loadingContent.className = "glass-effect p-16 rounded-3xl text-center flex flex-col items-center animate-in zoom-in-95 duration-500";
+            loadingContent.innerHTML = `
+                <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-primary text-5xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                </div>
+                <h2 class="font-display-lg text-primary text-3xl mb-2">Ahlan wa Sahlan</h2>
+                <p class="font-body-lg text-on-surface-variant">Redirecting to Administrative Console...</p>
+            `;
+
+            setTimeout(() => {
+                window.location.href = "admin-dashboard.html";
+            }, 1800);
+
+        } catch (error) {
+            overlay.classList.add('hidden');
+            console.error("Autentikasi gagal: ", error);
+            
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                alert("Akses Ditolak!Alamat email atau Password Anda salah.");
+            } else {
+                alert("Gagal terhubung ke server. Pastikan koneksi internet Anda stabil.");
+            }
+        }
+    });
+</script>
+</body>
+</html>

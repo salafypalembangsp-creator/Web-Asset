@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Management - Salafy Palembang</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Hanken+Grotesk:wght@600;700&family=Geist:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Hanken+Grotesk:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "surface-variant": "#dce2f3",
+                  "surface-container-low": "#f0f3ff",
+                  "surface": "#f9f9ff",
+                  "on-secondary-fixed-variant": "#005236",
+                  "surface-tint": "#2b6954",
+                  "surface-bright": "#f9f9ff",
+                  "on-tertiary": "#ffffff",
+                  "surface-container-high": "#e2e8f8",
+                  "tertiary-container": "#623c00",
+                  "outline": "#707974",
+                  "on-error-container": "#93000a",
+                  "inverse-on-surface": "#ebf1ff",
+                  "on-primary-container": "#80bea6",
+                  "tertiary-fixed": "#ffddb8",
+                  "primary-fixed-dim": "#95d3ba",
+                  "secondary-fixed": "#6ffbbe",
+                  "on-error": "#ffffff",
+                  "on-primary": "#ffffff",
+                  "secondary-container": "#6cf8bb",
+                  "surface-container-lowest": "#ffffff",
+                  "on-tertiary-fixed": "#2a1700",
+                  "error": "#ba1a1a",
+                  "surface-container-highest": "#dce2f3",
+                  "on-surface-variant": "#404944",
+                  "tertiary": "#442800",
+                  "secondary": "#006c49",
+                  "inverse-surface": "#2a313d",
+                  "on-tertiary-container": "#f69f0d",
+                  "tertiary-fixed-dim": "#ffb95f",
+                  "surface-container": "#e7eefe",
+                  "background": "#f9f9ff",
+                  "primary-fixed": "#b0f0d6",
+                  "primary-container": "#064e3b",
+                  "on-surface": "#151c27",
+                  "on-tertiary-fixed-variant": "#653e00",
+                  "inverse-primary": "#95d3ba",
+                  "secondary-fixed-dim": "#4edea3",
+                  "error-container": "#ffdad6",
+                  "on-secondary-fixed": "#002113",
+                  "on-primary-fixed-variant": "#0b513d",
+                  "primary": "#003527",
+                  "on-background": "#151c27",
+                  "on-secondary-container": "#00714d",
+                  "on-secondary": "#ffffff",
+                  "on-primary-fixed": "#002117",
+                  "surface-dim": "#d3daea",
+                  "outline-variant": "#bfc9c3"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "stack-md": "16px",
+                  "container-padding": "32px",
+                  "base": "4px",
+                  "stack-sm": "8px",
+                  "stack-lg": "32px",
+                  "sidebar-width": "280px",
+                  "gutter": "24px"
+          },
+          "fontFamily": {
+                  "body-lg": ["Inter"],
+                  "body-md": ["Inter"],
+                  "headline-lg-mobile": ["Hanken Grotesk"],
+                  "title-md": ["Hanken Grotesk"],
+                  "display-lg": ["Hanken Grotesk"],
+                  "label-md": ["Geist"],
+                  "label-sm": ["Geist"],
+                  "headline-lg": ["Hanken Grotesk"]
+          },
+          "fontSize": {
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                  "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #f3f4f6; /* As per Elevation & Depth Level 0 */
+      font-family: 'Inter', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .admin-card {
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      box-shadow: none;
+    }
+    .modal-overlay {
+      background: rgba(21, 28, 39, 0.4);
+      backdrop-filter: blur(2px);
+    }
+  </style>
+</head>
+<body class="text-on-background">
+<!-- SideNavBar -->
+<aside class="w-[280px] h-screen fixed left-0 top-0 bg-primary flex flex-col py-stack-lg border-r border-outline-variant z-20">
+<div class="px-6 mb-stack-lg">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="Salafy Palembang Logo" data-alt="A minimalist and elegant corporate logo for a religious educational institution. The emblem features geometric Islamic patterns within a circular frame, executed in deep emerald and soft mint green tones. The lighting is clean and professional, conveying a sense of spiritual calm and administrative authority in a modern minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlqd1tVFVwXLB830uvtzjFH9d_9BgLu84wi9Kf-W8srurjUQ6pn4607yLke-CNpVx5BO-pwwTl9EWzJXwqQBN_5N1zERBDUK2zxxqi4eKoN3kNIE-LmlfkR9DQaafspZFL0SM-p1GzXSriXgqJjTrTjcBYONoxmPey6AUf5gU9j3EysolZWe3F4syEcOBnvUO0xshym8Nklbyzdq6EleECD4NIlNpDKUj6GD4KrCq8kDCHwJ-bqKVmblex5qB_70Cj9M09Zn8wV8KV"/>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-primary leading-tight">Salafy Palembang</h1>
+<p class="font-label-md text-label-md text-primary-fixed-dim">Admin Console</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="dashboard">dashboard</span>
+        Dashboard
+      </a>
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="article">article</span>
+        Articles
+      </a>
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="mic_external_on">mic_external_on</span>
+        Audio
+      </a>
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="image">image</span>
+        Posters
+      </a>
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="quiz">quiz</span>
+        Q&A
+      </a>
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-surface-variant hover:text-on-primary-fixed hover:bg-primary-container transition-colors duration-200 rounded" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="event_note">event_note</span>
+        Study Schedules
+      </a>
+<!-- ACTIVE TAB: Admin Management -->
+<a class="flex items-center px-4 py-3 font-label-md text-label-md text-secondary-fixed border-l-4 border-secondary-fixed bg-on-primary-fixed-variant transition-transform duration-200 active:scale-[0.98] rounded-r" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="manage_accounts">manage_accounts</span>
+        Admin Management
+      </a>
+</nav>
+<div class="px-4 mt-auto">
+<div class="bg-primary-container/20 rounded-xl p-4 flex items-center gap-3">
+<img alt="Admin Profile" class="w-10 h-10 rounded-full border-2 border-secondary-fixed" data-alt="A professional headshot of a middle-aged administrator in a clean, brightly lit modern office setting. The lighting is soft and natural, emphasizing a calm and focused atmosphere. The style is minimalist corporate with a focus on professional integrity, using a palette of white, gray, and deep emerald green." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAXMdxawFx-FqQFxFa87upWOcRrT_Mt0OOKqQVQeS_OStYgYnnYmBYYKoad0DGAvj9HA0ZXTmBu8QzV5HzKenOeWaN0BDs0OGg7eTAN2q1XPmUrra_SPHzM3fD4OIL0suHOd1rZ7swQ2P_AYDeK6uiUrRdTyr1X0LSLKaPhABIErvsZHPN-wwX8iJf15JmUG_U5uQVbQ_wrGP5AlD_KWUrYdQraqfloXvo71SAFYmDVZFsmOVCIdZy7d-0mayFks_tl82QXjv0DAaY"/>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-primary truncate">Ustadz Ahmad</p>
+<p class="font-label-sm text-label-sm text-primary-fixed-dim">Super Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="ml-[280px] min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="h-16 sticky top-0 z-10 bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-lg text-headline-lg text-primary font-bold">Admin Management</h2>
+</div>
+<div class="flex items-center gap-stack-lg">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="search">search</span>
+</span>
+<input class="bg-surface-container-low border border-outline-variant rounded px-10 py-2 font-label-md text-label-md focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none w-64" placeholder="Search admins..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-container-padding flex flex-col gap-stack-lg">
+<!-- Header Action Section -->
+<section class="flex justify-between items-end">
+<div>
+<p class="font-body-md text-on-surface-variant mb-1">Manage system access levels and administrative credentials for the portal.</p>
+<div class="flex gap-stack-sm">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-sm text-label-sm">Total: 12 Admins</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full font-label-sm text-label-sm">Active Now: 3</span>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded font-label-md text-label-md flex items-center gap-2 hover:bg-primary/90 transition-all active:scale-[0.98]" onclick="toggleModal('add-admin-modal', true)">
+<span class="material-symbols-outlined text-base" data-icon="person_add">person_add</span>
+          Add Admin
+        </button>
+</section>
+<!-- Stats Grid (Bento Style) -->
+<section class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 md:col-span-4 admin-card p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase mb-2">Access Distribution</p>
+<h3 class="font-title-md text-title-md text-on-surface">Super Admins</h3>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-primary">03</span>
+<span class="font-label-md text-on-surface-variant">Total</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 admin-card p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase mb-2">Access Distribution</p>
+<h3 class="font-title-md text-title-md text-on-surface">Content Editors</h3>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-secondary">07</span>
+<span class="font-label-md text-on-surface-variant">Total</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 admin-card p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase mb-2">Access Distribution</p>
+<h3 class="font-title-md text-title-md text-on-surface">System Auditors</h3>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-tertiary-container">02</span>
+<span class="font-label-md text-on-surface-variant">Total</span>
+</div>
+</div>
+</section>
+<!-- Admin Table Container -->
+<section class="admin-card rounded-xl border border-outline-variant overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase">Admin Name</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase">Email Address</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase">Access Level</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase">Last Login</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors h-16">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-xs">UA</div>
+<span class="font-body-md text-on-surface">Ustadz Ahmad</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">ahmad.admin@salafy.id</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary-container text-on-primary-container rounded font-label-sm text-label-sm">Super Admin</span>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">2 mins ago</td>
+<td class="px-6 py-4 text-right">
+<button class="text-error hover:bg-error-container/20 p-2 rounded transition-colors" title="Delete">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors h-16">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary font-bold text-xs">FS</div>
+<span class="font-body-md text-on-surface">Faisal Shidiq</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">faisal.s@salafy.id</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded font-label-sm text-label-sm">Content Editor</span>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">3 hours ago</td>
+<td class="px-6 py-4 text-right">
+<button class="text-error hover:bg-error-container/20 p-2 rounded transition-colors" title="Delete">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors h-16">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed font-bold text-xs">RM</div>
+<span class="font-body-md text-on-surface">Rahman Maulana</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">rahman.m@salafy.id</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-container-high text-on-surface-variant rounded font-label-sm text-label-sm">System Auditor</span>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Yesterday, 14:20</td>
+<td class="px-6 py-4 text-right">
+<button class="text-error hover:bg-error-container/20 p-2 rounded transition-colors" title="Delete">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors h-16">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold text-xs">ZK</div>
+<span class="font-body-md text-on-surface">Zul Karnaen</span>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">zul.k@salafy.id</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container rounded font-label-sm text-label-sm">Content Editor</span>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface-variant">Oct 12, 2023</td>
+<td class="px-6 py-4 text-right">
+<button class="text-error hover:bg-error-container/20 p-2 rounded transition-colors" title="Delete">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Showing 1 to 4 of 12 admins</p>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-surface-container-low transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-sm text-label-sm">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-low font-label-sm text-label-sm">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-low font-label-sm text-label-sm">3</button>
+<button class="p-1 rounded hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Add Admin Modal -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="add-admin-modal">
+<div class="modal-overlay absolute inset-0" onclick="toggleModal('add-admin-modal', false)"></div>
+<div class="relative bg-surface w-full max-w-md rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+<div class="bg-primary px-6 py-4 flex justify-between items-center">
+<h3 class="font-title-md text-title-md text-on-primary">Add New Administrator</h3>
+<button class="text-on-primary hover:bg-white/10 p-1 rounded transition-colors" onclick="toggleModal('add-admin-modal', false)">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<form class="p-6 space-y-stack-md" onsubmit="event.preventDefault(); toggleModal('add-admin-modal', false);">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Full Name</label>
+<input class="w-full border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Enter admin's full name" required="" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Email Address</label>
+<input class="w-full border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="admin@salafy.id" required="" type="email"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Access Level</label>
+<select class="w-full border border-outline-variant rounded px-4 py-3 font-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all appearance-none bg-surface-container-low" required="">
+<option disabled="" selected="" value="">Select Access Level</option>
+<option value="super">Super Admin</option>
+<option value="editor">Content Editor</option>
+<option value="auditor">System Auditor</option>
+</select>
+</div>
+<div class="pt-stack-md flex gap-stack-md">
+<button class="flex-1 border border-outline-variant py-3 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-low transition-colors" onclick="toggleModal('add-admin-modal', false)" type="button">
+            Cancel
+          </button>
+<button class="flex-1 bg-primary text-on-primary py-3 rounded font-label-md text-label-md hover:bg-primary/90 transition-all active:scale-[0.98]" type="submit">
+            Create Admin
+          </button>
+</div>
+</form>
+</div>
+</div>
+<script>
+    function toggleModal(id, show) {
+      const modal = document.getElementById(id);
+      if (show) {
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      } else {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    // Micro-interaction for row clicks/selection
+    document.querySelectorAll('tbody tr').forEach(row => {
+      row.addEventListener('click', (e) => {
+        if (!e.target.closest('button')) {
+          // Visual feedback for selection if needed
+          console.log('Row clicked');
+        }
+      });
+    });
+  </script>
+</body></html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Salafy Palembang Admin Console</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Typography: Hanken Grotesk, Inter, Geist -->
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=Inter:wght@400;500&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#00714d",
+                    "on-primary-fixed-variant": "#0b513d",
+                    "surface": "#f9f9ff",
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-highest": "#dce2f3",
+                    "on-surface-variant": "#404944",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#2a1700",
+                    "on-primary": "#ffffff",
+                    "primary-fixed-dim": "#95d3ba",
+                    "tertiary-fixed": "#ffddb8",
+                    "on-background": "#151c27",
+                    "surface-dim": "#d3daea",
+                    "secondary-fixed": "#6ffbbe",
+                    "inverse-surface": "#2a313d",
+                    "surface-container-high": "#e2e8f8",
+                    "on-secondary-fixed-variant": "#005236",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#151c27",
+                    "background": "#f9f9ff",
+                    "surface-variant": "#dce2f3",
+                    "secondary-fixed-dim": "#4edea3",
+                    "on-tertiary-container": "#f69f0d",
+                    "primary-fixed": "#b0f0d6",
+                    "inverse-primary": "#95d3ba",
+                    "surface-tint": "#2b6954",
+                    "outline-variant": "#bfc9c3",
+                    "inverse-on-surface": "#ebf1ff",
+                    "error-container": "#ffdad6",
+                    "secondary-container": "#6cf8bb",
+                    "on-tertiary": "#ffffff",
+                    "secondary": "#006c49",
+                    "tertiary": "#442800",
+                    "surface-bright": "#f9f9ff",
+                    "on-primary-container": "#80bea6",
+                    "tertiary-container": "#623c00",
+                    "surface-container": "#e7eefe",
+                    "on-primary-fixed": "#002117",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "surface-container-low": "#f0f3ff",
+                    "outline": "#707974",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#064e3b",
+                    "primary": "#003527",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-lg": "32px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "sidebar-width": "280px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "container-padding": "32px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Hanken Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "label-sm": ["Geist"],
+                    "title-md": ["Hanken Grotesk"],
+                    "label-md": ["Geist"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .serene-pattern {
+            background-color: #f3f4f6;
+            background-image: radial-gradient(#003527 0.5px, transparent 0.5px), radial-gradient(#003527 0.5px, #f3f4f6 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.03;
+        }
+
+        .login-card-blur {
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden h-screen flex items-center justify-center relative">
+<!-- Atmospheric Background Layers -->
+<div class="absolute inset-0 serene-pattern pointer-events-none"></div>
+<div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] rounded-full bg-primary-fixed-dim/20 blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-on-secondary-container/10 blur-[120px] pointer-events-none"></div>
+<main class="relative z-10 w-full max-w-md px-container-padding animate-in fade-in slide-in-from-bottom-4 duration-1000">
+<!-- Brand Identity Container -->
+<div class="flex flex-col items-center mb-stack-lg space-y-stack-sm text-center">
+<div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-base shadow-sm">
+<span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">mosque</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Salafy Palembang</h1>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Admin Console</p>
+</div>
+<!-- Login Card -->
+<div class="login-card-blur border border-outline-variant rounded-lg p-8 shadow-sm">
+<div class="mb-stack-lg">
+<h2 class="font-title-md text-title-md text-on-surface mb-base">Ahlan wa Sahlan, Admin</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Please authenticate to access the governance portal.</p>
+</div>
+<form action="#" class="space-y-stack-md" id="loginForm" method="POST">
+<!-- Username Field -->
+<div class="space-y-base">
+<label class="font-label-md text-label-md text-on-surface-variant" for="username">Username or Email</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px] group-focus-within:text-primary transition-colors">person</span>
+<input class="w-full pl-10 pr-4 py-3 bg-transparent border border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 outline-none" id="username" name="username" placeholder="Enter your credentials" required="" type="text"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-base">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
+<a class="font-label-sm text-label-sm text-secondary hover:underline" href="#">Forgot password?</a>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px] group-focus-within:text-primary transition-colors">lock</span>
+<input class="w-full pl-10 pr-10 py-3 bg-transparent border border-outline rounded-lg font-body-md text-body-md focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface-variant transition-colors" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined text-[20px]" id="passwordIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center space-x-2 py-base">
+<input class="w-4 h-4 text-primary border-outline rounded focus:ring-primary" id="remember" name="remember" type="checkbox"/>
+<label class="font-label-md text-label-md text-on-surface-variant cursor-pointer select-none" for="remember">Remember this session</label>
+</div>
+<!-- Login Button -->
+<button class="w-full py-4 bg-primary text-on-primary font-title-md text-title-md rounded-lg shadow-sm hover:bg-primary-container active:scale-[0.98] transition-all duration-200 flex items-center justify-center space-x-2" type="submit">
+<span>Login</span>
+<span class="material-symbols-outlined text-[20px]">login</span>
+</button>
+</form>
+<!-- Social/Secondary Links -->
+<div class="mt-stack-lg pt-stack-md border-t border-outline-variant text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+                    Internal System Security: IP logging is active.
+                </p>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-stack-lg text-center">
+<p class="font-label-sm text-label-sm text-outline-variant">
+                © 2024 Salafy Palembang Development Team.<br/>
+                Built for dedicated governance and community service.
+            </p>
+</footer>
+</main>
+<!-- Interactive Layer -->
+<div class="fixed inset-0 bg-primary/20 backdrop-blur-sm z-50 flex flex-col items-center justify-center hidden" id="loadingOverlay">
+<div class="w-12 h-12 border-4 border-on-primary-fixed-variant border-t-primary rounded-full animate-spin"></div>
+<p class="mt-4 font-title-md text-title-md text-primary">Authenticating...</p>
+</div>
+<script>
+        function togglePassword() {
+            const pwdInput = document.getElementById('password');
+            const icon = document.getElementById('passwordIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                icon.innerText = 'visibility_off';
+            } else {
+                pwdInput.type = 'password';
+                icon.innerText = 'visibility';
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.remove('hidden');
+            
+            // Simulating a modern login transition
+            setTimeout(() => {
+                overlay.innerHTML = `
+                    <div class="text-center animate-bounce">
+                        <span class="material-symbols-outlined text-primary text-6xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        <p class="mt-4 font-display-lg text-display-lg text-primary">Welcome, Admin</p>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant">Redirecting to Dashboard...</p>
+                    </div>
+                `;
+                setTimeout(() => {
+                    // This is where real redirection logic would occur
+                    window.location.reload(); 
+                }, 1500);
+            }, 2000);
+        });
+
+        // Atmospheric micro-interaction: subtle mouse tracking on the card
+        const card = document.querySelector('.login-card-blur');
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 768) {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 100;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 100;
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            }
+        });
+    </script>
+</body></html>
