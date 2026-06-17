@@ -31,48 +31,6 @@
             border-radius: 10px;
         }
     </style>
-    <!-- SKRIP PROTEKSI BERLAPIS: ANTI INSPECT / ANTI DEVTOOLS -->
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', function(e) {
-            if (
-                e.key === "F12" ||
-                (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j" || e.key === "C" || e.key === "c")) ||
-                (e.ctrlKey && (e.key === "U" || e.key === "u" || e.key === "S" || e.key === "s"))
-            ) {
-                e.preventDefault();
-                return false;
-            }
-        });
-        setInterval(function() {
-            function isiBom() {
-                debugger;
-            }
-            try { isiBom(); } catch(err) {}
-        }, 100);
-    </script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary": "#003527",
-                        "primary-container": "#064e3b",
-                        "primary-fixed-dim": "#95d3ba",
-                        "secondary-fixed": "#6ffbbe",
-                        "secondary-container": "#6cf8bb",
-                        "on-secondary-fixed-variant": "#005236",
-                        "surface": "#f9f9ff",
-                        "surface-container-low": "#f0f3ff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-surface": "#151c27",
-                        "outline-variant": "#bfc9c3",
-                        "error": "#ba1a1a"
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 <body class="bg-[#F3F4F6] font-body-md text-on-surface pb-20 lg:pb-0">
 
@@ -155,13 +113,12 @@
         <main class="p-4 lg:p-6 space-y-4 max-w-[1400px]">
             <section class="bg-white border border-outline-variant p-4 lg:p-6 rounded-xl shadow-sm">
                 <h3 class="text-lg lg:text-xl font-bold text-primary">Katalog & Unggah Rekaman Kajian</h3>
-                <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Sistem Direct Bypass aman untuk mengalirkan file audio berukuran besar (10-50MB+) langsung ke rilis infrastruktur cloud.</p>
+                <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Unggah berkas rekaman audio kajian langsung melalui API Vercel Proxy yang terotentikasi aman.</p>
             </section>
 
-            <!-- WORKSPACE INTERFACE SPLIT -->
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 items-start">
                 
-                <!-- COLUMN LEFT: FORMULIR UPLOAD AUDIO -->
+                <!-- COLUMN LEFT: FORMULIR UPLOAD -->
                 <section class="bg-white border border-outline-variant p-4 lg:p-5 rounded-xl shadow-sm space-y-4 xl:col-span-1">
                     <div class="border-b pb-2">
                         <h4 class="text-xs sm:text-sm font-bold text-primary uppercase tracking-tight">Formulir Audio Kajian Baru</h4>
@@ -193,7 +150,7 @@
                             <input id="audio-thumb-uploader" type="file" accept="image/*" required class="block w-full text-[11px] text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-container file:cursor-pointer cursor-pointer pt-1"/>
                         </div>
 
-                        <!-- PREVIEW THUMBNAIL -->
+                        <!-- PREVIEW BOX -->
                         <div class="p-2 bg-gray-50 border border-dashed rounded-xl flex flex-col items-center justify-center min-h-[110px] relative overflow-hidden">
                             <img id="audio-preview-visual" class="max-h-[140px] object-contain hidden z-10 rounded shadow-md"/>
                             <div id="audio-preview-placeholder" class="text-center text-gray-400 py-3">
@@ -225,7 +182,7 @@
                     </form>
                 </section>
 
-                <!-- COLUMN RIGHT: LIST DISPLAY ACCORDION -->
+                <!-- COLUMN RIGHT: LIST DISPLAY -->
                 <section class="xl:col-span-2 bg-white border border-outline-variant p-4 lg:p-5 rounded-xl shadow-sm space-y-4">
                     <div class="border-b pb-2 flex justify-between items-center">
                         <h4 class="text-xs sm:text-sm font-bold text-primary uppercase tracking-tight">Koleksi Audio Kajian di Website</h4>
@@ -243,7 +200,7 @@
         </main>
     </div>
 
-    <!-- CORE SCRIPT ENGINE MODULE -->
+    <!-- SCRIPT ENGINE MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -262,17 +219,16 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // DIRECT FRONTEND SECURE TOKEN PIPELINE (BYPASS VERCEL 4.5MB LIMIT)
-        const GITHUB_DIRECT_TOKEN = "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";
-        const REPO_OWNER = "salafypalembangsp-creator";
-        const REPO_NAME = "Web-Asset";
+        const VERCEL_PRODUCTION_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+            ? "https://web-asset-ruby.vercel.app" 
+            : window.location.origin;
 
         let currentAdminEmail = "Admin";
-        let rawAudioFile = null;
+        let preparedAudioBase64 = "";
         let preparedThumbBase64 = "";
         let allAudioCache = [];
 
-        // AUTH AND PROFILE SYNC PIPELINE
+        // PROFILE SYNC
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.href = "admin-login.html";
@@ -295,7 +251,7 @@
             }
         });
 
-        // KONTROL THUMBNAIL UPLOADER (v1.2)
+        // IMAGE HANDLER & COMPRESSION
         document.getElementById('audio-thumb-uploader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if(!file) return;
@@ -304,16 +260,11 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    if (img.width > 600) {
-                        canvas.width = 600;
-                        canvas.height = img.height * (600 / img.width);
-                    } else {
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                    }
+                    canvas.width = 500;
+                    canvas.height = img.height * (500 / img.width);
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    const compressedUrl = canvas.toDataURL('image/jpeg', 0.80);
+                    const compressedUrl = canvas.toDataURL('image/jpeg', 0.75);
                     preparedThumbBase64 = compressedUrl.split(',')[1];
                     document.getElementById('audio-preview-visual').src = compressedUrl;
                     document.getElementById('audio-preview-visual').classList.remove('hidden');
@@ -324,46 +275,29 @@
             reader.readAsDataURL(file);
         });
 
-        // KONTROL AUDIO FILE SELECTION POINTER
+        // AUDIO STRING STREAM CONVERTER
         document.getElementById('audio-file-uploader').addEventListener('change', function(e) {
-            rawAudioFile = e.target.files[0] || null;
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                preparedAudioBase64 = event.target.result.split(',')[1];
+            };
+            reader.readAsDataURL(file);
         });
 
-        // FUNGSI UTAMA: DIRECT BINARY UPLOAD TO GITHUB ASSETS (BYPASS VERCEL CONSTRAINTS)
-        async function uploadAsetKeGitHubDirect(namaFile, rawData, tagTarget, contentType) {
-            const resRelease = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/${tagTarget}`, {
-                headers: { "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}` }
-            });
-            const dataRelease = await resRelease.json();
-            if(!resRelease.ok) throw new Error(`Tag ${tagTarget} tidak valid atau token otentikasi kedaluwarsa.`);
-
-            const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${dataRelease.id}/assets?name=${encodeURIComponent(namaFile)}`;
-            const resUpload = await fetch(uploadUrl, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}`,
-                    "Content-Type": contentType
-                },
-                body: rawData
-            });
-            const dataAsset = await resUpload.json();
-            if(!resUpload.ok) throw new Error(dataAsset.message || "Gagal mengalirkan data biner ke GitHub.");
-            return dataAsset.id;
-        }
-
-        // DISPATCHER SUBMIT FORM AUDIO KAJIAN BARU
+        // SECURE SUBMIT DISPATCHER (NO FRONTEND TOKEN)
         document.getElementById('form-upload-audio').addEventListener('submit', async function(e) {
             e.preventDefault();
             const judul = document.getElementById('audio-input-judul').value.trim();
             const pemateri = document.getElementById('audio-input-pemateri').value.trim();
             const kategori = document.getElementById('audio-input-kategori').value.trim();
 
-            if(!rawAudioFile) { alert("Silakan masukkan file audio kajian."); return; }
-            if(!preparedThumbBase64) { alert("Silakan masukkan kover thumbnail gambar."); return; }
+            if(!preparedAudioBase64) { alert("Tunggu berkas audio diproses."); return; }
+            if(!preparedThumbBase64) { alert("Tentukan berkas gambar kover."); return; }
 
             let parsedName = judul.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9.]/g, '');
             const cleanBaseName = parsedName || `audio.${Date.now()}`;
-            
             const fileAudioName = `${cleanBaseName}.mp3`;
             const fileThumbName = `kover.${cleanBaseName}.jpg`;
 
@@ -379,22 +313,31 @@
             progressZone.classList.remove('hidden');
 
             try {
-                // LANGKAH 1: UNGGAH THUMBNAIL GAMBAR KE v1.2
-                progressBar.style.width = "25%"; percentText.textContent = "25%";
-                statusText.textContent = "UPLOADING COVER TO GITHUB v1.2...";
-                
-                const thumbBlob = await (await fetch(`data:image/jpeg;base64,${preparedThumbBase64}`)).blob();
-                const thumbAssetId = await uploadAsetKeGitHubDirect(fileThumbName, thumbBlob, "v1.2", "image/jpeg");
+                // 1. UNGGAH COVER KE v1.2 VIA VERCEL BACKEND ROUTE
+                progressBar.style.width = "30%"; percentText.textContent = "30%";
+                statusText.textContent = "UPLOADING COVER TO v1.2...";
+                const resThumb = await fetch(`${VERCEL_PRODUCTION_URL}/api/upload`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fileName: fileThumbName, fileBase64: preparedThumbBase64, tagRelease: "v1.2" })
+                });
+                let thumbData = JSON.parse(await resThumb.text());
+                if(!resThumb.ok || !thumbData.success) throw new Error("Gagal memproses gambar kover.");
 
-                // LANGKAH 2: UNGGAH FILE AUDIO RAKSASA (10-50MB) KE v1.1 DIRECT FROM BROWSER STREAM
-                progressBar.style.width = "65%"; percentText.textContent = "65%";
-                statusText.textContent = "STREAMING AUDIO TO GITHUB v1.1 (BYPASSING VERCEL)...";
-                
-                const audioAssetId = await uploadAsetKeGitHubDirect(fileAudioName, rawAudioFile, "v1.1", rawAudioFile.type || "audio/mpeg");
+                // 2. UNGGAH AUDIO KE v1.1 VIA VERCEL BACKEND ROUTE (CORS COMPLIANT)
+                progressBar.style.width = "70%"; percentText.textContent = "70%";
+                statusText.textContent = "UPLOADING AUDIO TO v1.1...";
+                const resAudio = await fetch(`${VERCEL_PRODUCTION_URL}/api/upload`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fileName: fileAudioName, fileBase64: preparedAudioBase64, tagRelease: "v1.1" })
+                });
+                let audioData = JSON.parse(await resAudio.text());
+                if(!resAudio.ok || !audioData.success) throw new Error("Gagal memproses berkas audio.");
 
-                // LANGKAH 3: SIMPAN LOG & RECORD KE KOLEKSI FIRESTORE "audio"
+                // 3. SELESAIKAN COUPLING FIRESTORE RECORD
                 progressBar.style.width = "90%"; percentText.textContent = "90%";
-                statusText.textContent = "WRITING DATABASE DOCUMENTS...";
+                statusText.textContent = "SAVING SCHEMAS...";
 
                 const formatTanggalStr = new Date().toISOString().split('T')[0];
                 const finalAudioLink = `https://github.com/salafypalembangsp-creator/Web-Asset/releases/download/v1.1/${fileAudioName}`;
@@ -406,45 +349,38 @@
                     Kategori: kategori,
                     Link_Audio: finalAudioLink,
                     Link_Thumbnail: finalThumbLink,
-                    id_aset_audio: audioAssetId,
-                    id_aset_thumb: thumbAssetId,
+                    id_aset_audio: audioData.assetId,
+                    id_aset_thumb: thumbData.assetId,
                     Tanggal: formatTanggalStr
                 });
 
-                await addDoc(collection(db, "logs"), {
-                    action: `Menerbitkan Audio Rekaman: "${judul}"`,
-                    module: "Audio", operator: currentAdminEmail.split('@')[0], tanggal: new Date(), status: "Published"
-                });
-
                 progressBar.style.width = "100%"; percentText.textContent = "100%";
-                statusText.textContent = "PUBLISHED SUCCESSFULLY!";
-                alert("✔ Rekaman kajian sukses diterbitkan ke website!");
+                statusText.textContent = "FINISHED!";
+                alert("✔ Rekaman kajian sukses diterbitkan!");
 
                 resetFormPipeline();
                 muatKoleksiAudioLokal();
 
             } catch (err) {
-                console.error(err);
-                alert(`❌ Gagal Memproses Aliran Unggahan:\n${err.message}`);
+                alert(`❌ Eror: ${err.message}`);
             } finally { btnSubmit.disabled = false; }
         });
 
-        // ACTION BUTTON: CANCEL / RESET FORMULIR
+        // CANCEL / RESET PIPELINE BUTTON
         function resetFormPipeline() {
             document.getElementById('form-upload-audio').reset();
             document.getElementById('audio-preview-visual').classList.add('hidden');
             document.getElementById('audio-preview-placeholder').classList.remove('hidden');
             document.getElementById('uploader-progress-zone').classList.add('hidden');
-            rawAudioFile = null; 
-            preparedThumbBase64 = "";
+            preparedAudioBase64 = ""; preparedThumbBase64 = "";
         }
         document.getElementById('btn-cancel-audio').addEventListener('click', function() {
-            if(confirm("Batalkan pengisian formulir dan bersihkan berkas pilihan?")) {
+            if(confirm("Batalkan pengisian formulir dan bersihkan pilihan berkas?")) {
                 resetFormPipeline();
             }
         });
 
-        // FUNGSI TARIK DATA AUDIO FIRESTORE
+        // LOAD DATA AUDIO FIRESTORE
         async function muatKoleksiAudioLokal() {
             const accordionBox = document.getElementById('audio-accordion-container');
             const counterBadge = document.getElementById('audio-counter-badge');
@@ -467,7 +403,6 @@
             }
         }
 
-        // RENDER ACCORDION AUDIO LIST MAPPING WITH IN-PLACE EDIT MODE
         function renderAudioAccordion() {
             const accordionBox = document.getElementById('audio-accordion-container');
             accordionBox.innerHTML = "";
@@ -532,7 +467,7 @@
                 accordionBox.innerHTML += cardHtml;
             });
 
-            // RE-BIND EVENT LISTENERS
+            // RE-BIND EVENTS
             document.querySelectorAll('.btn-toggle-audio-acc').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const targetId = this.getAttribute('data-target');
@@ -550,68 +485,58 @@
             });
 
             document.querySelectorAll('.btn-simpan-audio').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const docId = this.getAttribute('data-id');
-                    updateAudioSistem(docId);
-                });
+                btn.addEventListener('click', function() { updateAudioSistem(this.getAttribute('data-id')); });
             });
 
             document.querySelectorAll('.btn-hapus-audio').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const audioAsset = this.getAttribute('data-audioasset');
-                    const thumbAsset = this.getAttribute('data-thumbasset');
-                    const title = this.getAttribute('data-title');
-                    hapusAudioSistem(id, audioAsset, thumbAsset, title);
+                    hapusAudioSistem(this.getAttribute('data-id'), this.getAttribute('data-audioasset'), this.getAttribute('data-thumbasset'), this.getAttribute('data-title'));
                 });
             });
         }
 
-        // FUNGSIONALITAS UPDATE TEKS DATA AUDIO
+        // UPDATE
         async function updateAudioSistem(docId) {
             const mJudul = document.getElementById(`edit-audio-judul-${docId}`).value.trim();
             const mPemateri = document.getElementById(`edit-audio-pemateri-${docId}`).value.trim();
             const mKategori = document.getElementById(`edit-audio-kategori-${docId}`).value.trim();
             const mTanggal = document.getElementById(`edit-audio-tanggal-${docId}`).value;
 
-            if(!mJudul || !mPemateri || !mKategori) { alert("Semua kolom ubah wajib diisi!"); return; }
+            if(!mJudul || !mPemateri || !mKategori) { alert("Semua kolom wajib diisi!"); return; }
             if(!confirm("Simpan modifikasi data audio kajian ini?")) return;
 
             try {
-                await updateDoc(doc(db, "audio", docId), { 
-                    Judul: mJudul, 
-                    Pemateri: mPemateri, 
-                    Kategori: mKategori,
-                    Tanggal: mTanggal 
-                });
+                await updateDoc(doc(db, "audio", docId), { Judul: mJudul, Pemateri: mPemateri, Kategori: mKategori, Tanggal: mTanggal });
                 alert("✔ Perubahan rekaman berhasil disimpan!");
                 muatKoleksiAudioLokal();
             } catch(e) { alert("Gagal memperbarui database."); }
         }
 
-        // FUNGSIONALITAS HAPUS MUTLAK DENGAN BEARER AUTH
+        // SECURE DELETE VIA VERCEL PROXY
         async function hapusAudioSistem(idDokumen, idAudioAset, idThumbAset, namaAudio) {
-            if(!confirm(`⚠️ MUTASI PENGHAPUSAN MUTLAK!\nApakah Anda yakin ingin melenyapkan rekaman kajian: "${namaAudio}"?\n\nFile biner di v1.1 dan v1.2 GitHub akan ditiadakan.`)) return;
+            if(!confirm(`⚠️ WARNING!\nApakah Anda yakin ingin menghapus rekaman: "${namaAudio}"?`)) return;
 
             try {
-                if(idAudioAset) {
-                    await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${idAudioAset}`, {
-                        method: 'DELETE', headers: { "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}` }
+                if(idAudioAset && idAudioAset !== "") {
+                    await fetch(`${VERCEL_PRODUCTION_URL}/api/upload`, {
+                        method: 'DELETE', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ assetId: idAudioAset })
                     });
                 }
-                if(idThumbAset) {
-                    await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${idThumbAset}`, {
-                        method: 'DELETE', headers: { "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}` }
+                if(idThumbAset && idThumbAset !== "") {
+                    await fetch(`${VERCEL_PRODUCTION_URL}/api/upload`, {
+                        method: 'DELETE', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ assetId: idThumbAset })
                     });
                 }
 
                 await deleteDoc(doc(db, "audio", idDokumen));
-                alert("✔ Sukses! Seluruh aset rekaman ilmu berhasil dibersihkan.");
+                alert("✔ Sukses membersihkan berkas kajian!");
                 muatKoleksiAudioLokal();
-            } catch(err) { alert("Terjadi kendala saat bersihkan server."); }
+            } catch(err) { alert("Gagal menghapus berkas di server."); }
         }
 
-        // MANAJEMEN LOGOUT CONSOLE
+        // LOGOUT LOGIC
         const triggerLogout = function() {
             if (confirm("Keluar dari konsol admin Salafy Palembang?")) {
                 signOut(auth).then(() => { window.location.href = "admin-login.html"; });
