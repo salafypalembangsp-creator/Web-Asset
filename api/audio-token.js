@@ -51,17 +51,13 @@ module.exports = async function handler(req, res) {
     const decoded = await admin.auth().verifyIdToken(idToken, true);
     const email = (decoded.email || "").toLowerCase();
 
-    if (!decoded.email_verified) {
-      return res.status(403).json({ success: false, error: "Email belum terverifikasi." });
-    }
-
     // 3. (Opsional tapi disarankan) Batasi hanya email admin tertentu
     if (ALLOWED_ADMIN_EMAILS.length > 0 && !ALLOWED_ADMIN_EMAILS.includes(email)) {
       return res.status(403).json({ success: false, error: "Akun ini tidak memiliki akses admin." });
     }
 
     // 4. Pastikan token GitHub sudah dikonfigurasi di server
-    const githubToken = process.env.GITHUB_TOKEN;
+    const githubToken = process.env.GITHUB_ACCESS_TOKEN;
     if (!githubToken) {
       console.error("GITHUB_TOKEN belum diset di Environment Variables Vercel.");
       return res.status(500).json({ success: false, error: "Konfigurasi server belum lengkap." });
