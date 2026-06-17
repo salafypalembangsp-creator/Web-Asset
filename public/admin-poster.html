@@ -52,7 +52,6 @@
 </head>
 <body class="bg-[#F3F4F6] font-body-md text-on-surface pb-20 lg:pb-0">
 
-    <!-- SIDEBAR NAVIGATION -->
     <aside class="hidden lg:flex w-[280px] h-screen fixed left-0 top-0 bg-primary border-r border-outline-variant flex flex-col py-stack-lg z-20">
         <div class="px-6 mb-stack-lg">
             <h1 class="font-display-lg text-2xl font-bold text-white">Salafy Palembang</h1>
@@ -98,7 +97,6 @@
         </div>
     </aside>
 
-    <!-- BOTTOM MOBILE NAVIGATION -->
     <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-2xl z-50 flex justify-around items-center h-16 px-2">
         <a href="admin-dashboard.html" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary flex-1 py-1">
             <span class="material-symbols-outlined text-xl">dashboard</span>
@@ -122,7 +120,6 @@
         </button>
     </div>
 
-    <!-- MAIN APP LAYOUT -->
     <div class="lg:ml-[280px] flex flex-col min-h-screen relative">
         <header class="flex justify-between items-center px-4 lg:px-8 h-16 sticky top-0 z-30 bg-surface border-b border-outline-variant gap-4">
             <div class="flex items-center gap-2">
@@ -131,16 +128,12 @@
         </header>
 
         <main class="p-4 lg:p-6 space-y-4 max-w-[1400px]">
-            <!-- TOP CARD CONTROL INFO -->
             <section class="bg-white border border-outline-variant p-4 lg:p-6 rounded-xl shadow-sm">
                 <h3 class="text-lg lg:text-xl font-bold text-primary">Katalog & Unggah Poster</h3>
-                <p class="text-xs sm:text-sm text-gray-500 mt-0.5">Kelola visual berkas maklumat faedah ilmu dakwah berkala Ma'had Salafy Palembang.</p>
             </section>
 
-            <!-- WORKSPACE INTERFACE SPLIT -->
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 items-start">
                 
-                <!-- COLUMN LEFT: FORMULIR UPLOAD POSTER -->
                 <section class="bg-white border border-outline-variant p-4 lg:p-5 rounded-xl shadow-sm space-y-4">
                     <div class="border-b pb-2">
                         <h4 class="text-xs sm:text-sm font-bold text-primary uppercase tracking-tight">Formulir Poster Baru</h4>
@@ -157,7 +150,6 @@
                             <input id="poster-file-uploader" type="file" accept="image/*" required class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-container file:cursor-pointer cursor-pointer"/>
                         </div>
 
-                        <!-- LIVE PREVIEW BOX -->
                         <div class="p-3 bg-gray-50 border border-dashed rounded-xl flex flex-col items-center justify-center min-h-[220px] relative overflow-hidden group">
                             <img id="poster-preview-visual" class="max-h-[300px] object-contain hidden z-10 rounded shadow-md"/>
                             <div id="poster-preview-placeholder" class="text-center text-gray-400 py-8">
@@ -166,7 +158,6 @@
                             </div>
                         </div>
 
-                        <!-- PROGRESS BAR PIPELINE -->
                         <div id="uploader-progress-zone" class="space-y-1.5 hidden">
                             <div class="flex justify-between text-[11px] font-bold">
                                 <span id="uploader-status-text" class="text-emerald-800">PROCESSING ASSET...</span>
@@ -184,18 +175,23 @@
                     </form>
                 </section>
 
-                <!-- COLUMN RIGHT: CATALOG DISPLAY GALLERY -->
                 <section class="xl:col-span-2 bg-white border border-outline-variant p-4 lg:p-5 rounded-xl shadow-sm space-y-4">
                     <div class="border-b pb-2 flex justify-between items-center">
                         <h4 class="text-xs sm:text-sm font-bold text-primary uppercase tracking-tight">Koleksi Poster yang Terbit</h4>
                         <span id="poster-counter-badge" class="px-2 py-0.5 bg-emerald-50 text-emerald-800 font-bold text-[10px] rounded border border-emerald-100">... Items</span>
                     </div>
 
-                    <!-- GRID POSTERS CONTAINER CONTAINER -->
                     <div id="poster-gallery-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[640px] overflow-y-auto custom-scrollbar p-0.5">
                         <div class="sm:col-span-3 text-center text-gray-400 py-16">
                             Memuat index database poster...
                         </div>
+                    </div>
+
+                    <div id="load-more-container" class="hidden mt-4 pt-4 border-t border-gray-100 flex justify-center">
+                        <button onclick="toggleSemuaPoster()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] py-2 px-6 rounded-full transition-all flex items-center gap-1.5 border border-emerald-200 focus:outline-none shadow-sm">
+                            <span id="load-more-icon" class="material-symbols-outlined text-base">expand_more</span>
+                            <span id="load-more-text">Lihat Semua Poster</span>
+                        </button>
                     </div>
                 </section>
 
@@ -203,7 +199,6 @@
         </main>
     </div>
 
-    <!-- FIREBASE AND SCRIPT LOGIC CORE MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -222,14 +217,15 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // LOGIKA PENYALURAN UTAMA DINAMIS: otomatis bypass saat localhost/online
         const VERCEL_PRODUCTION_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
             ? "https://web-asset-ruby.vercel.app" 
             : window.location.origin;
 
         let currentAdminEmail = "Admin";
         let preparedBase64Data = "";
-        let preparedFileName = "";
+
+        let allPostersCache = []; 
+        let isShowingAll = false;
 
         // AUTHENTICATION GUARD CHECKER
         onAuthStateChanged(auth, async (user) => {
@@ -256,25 +252,48 @@
             }
         });
 
-        // RECONVERT CONVERSION STREAM FILE UPLOADER
+        // RECONVERT CONVERSION STREAM FILE UPLOADER (DENGAN KOMPRESI OTOMATIS)
         document.getElementById('poster-file-uploader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if(!file) return;
 
-            const lastDotIndex = file.name.lastIndexOf('.');
-            const originalName = lastDotIndex !== -1 ? file.name.substring(0, lastDotIndex) : file.name;
-            const extension = lastDotIndex !== -1 ? file.name.substring(lastDotIndex + 1) : "jpg";
-            
-            let parsedName = originalName.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9.]/g, '');
-            preparedFileName = `${parsedName}.${extension}`;
-
             const reader = new FileReader();
-            reader.onloadend = function() {
-                preparedBase64Data = reader.result.split(',')[1];
-                
-                document.getElementById('poster-preview-visual').src = reader.result;
-                document.getElementById('poster-preview-visual').classList.remove('hidden');
-                document.getElementById('poster-preview-placeholder').classList.add('hidden');
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    
+                    const MAX_WIDTH = 1920; 
+                    const MAX_HEIGHT = 1920;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Kompresi ke format JPEG kualitas 80% agar ringan
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    preparedBase64Data = dataUrl.split(',')[1];
+                    
+                    document.getElementById('poster-preview-visual').src = dataUrl;
+                    document.getElementById('poster-preview-visual').classList.remove('hidden');
+                    document.getElementById('poster-preview-placeholder').classList.add('hidden');
+                }
+                img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         });
@@ -284,12 +303,20 @@
             e.preventDefault();
             
             const judulPoster = document.getElementById('poster-input-judul').value.trim();
-            if(!preparedBase64Data || !preparedFileName) {
+            if(!preparedBase64Data) {
                 alert("Silakan pilih berkas gambar poster terlebih dahulu.");
                 return;
             }
 
-            if(!confirm(`Publikasikan poster "${judulPoster}" ke server?`)) return;
+            // OTOMATISASI NAMA FILE: generate nama file unik & aman berdasarkan input "Judul"
+            let parsedName = judulPoster.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9.]/g, '');
+            // Antisipasi jika judul hanya berisi karakter aneh, beri fallback timestamp
+            if (parsedName === "" || parsedName === ".") {
+                parsedName = `poster.${Date.now()}`;
+            }
+            const finalFileName = `${parsedName}.jpg`;
+
+            if(!confirm(`Publikasikan poster "${judulPoster}" dengan nama berkas "${finalFileName}"?`)) return;
 
             const progressZone = document.getElementById('uploader-progress-zone');
             const progressBar = document.getElementById('uploader-progress-bar');
@@ -309,7 +336,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        fileName: preparedFileName,
+                        fileName: finalFileName, // Menggunakan nama file hasil konversi judul
                         fileBase64: preparedBase64Data,
                         tagRelease: "v1.0" 
                     })
@@ -329,7 +356,7 @@
                 const hariIni = new Date();
                 const formatTanggalStr = hariIni.toISOString().split('T')[0];
 
-                const linkGambarV1 = `https://github.com/salafypalembangsp-creator/Web-Asset/releases/download/v1.0/${preparedFileName}`;
+                const linkGambarV1 = `https://github.com/salafypalembangsp-creator/Web-Asset/releases/download/v1.0/${finalFileName}`;
 
                 await addDoc(collection(db, "poster"), {
                     Judul: judulPoster,
@@ -355,9 +382,11 @@
                 document.getElementById('form-upload-poster').reset();
                 document.getElementById('poster-preview-visual').classList.add('hidden');
                 document.getElementById('poster-preview-placeholder').classList.remove('hidden');
-                preparedBase64Data = ""; preparedFileName = "";
+                preparedBase64Data = "";
                 
                 setTimeout(() => { progressZone.classList.add('hidden'); }, 1500);
+                
+                isShowingAll = false; 
                 muatKoleksiPosterLokal();
 
             } catch (err) {
@@ -368,10 +397,11 @@
             }
         });
 
-        // RE-FETCH PULL RENDER INDEX CATALOG LIST POSTERS FROM FIRESTORE
+        // FUNGSI 1: MENGAMBIL DATA DARI FIRESTORE KE DALAM CACHE
         async function muatKoleksiPosterLokal() {
             const galleryBox = document.getElementById('poster-gallery-container');
             const counterBadge = document.getElementById('poster-counter-badge');
+            const loadMoreContainer = document.getElementById('load-more-container');
 
             try {
                 const q = query(collection(db, "poster"), orderBy("Tanggal", "desc"));
@@ -384,40 +414,16 @@
                         <div class="sm:col-span-3 text-center text-gray-400 py-16">
                             Belum ada poster dakwah yang diunggah ke database.
                         </div>`;
+                    loadMoreContainer.classList.add('hidden');
                     return;
                 }
 
-                galleryBox.innerHTML = "";
+                allPostersCache = [];
                 snap.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    const docId = docSnap.id;
-
-                    const judulTampil = data.Judul || "Untitled Poster";
-                    const linkTampil = data.Link_Gambar || "#";
-                    const tanggalTampil = data.Tanggal || "-";
-
-                    galleryBox.innerHTML += `
-                        <div class="bg-gray-50 border border-outline-variant/60 rounded-xl overflow-hidden p-2.5 flex flex-col justify-between group hover:border-primary transition-all shadow-xs relative">
-                            <div class="w-full h-44 bg-white rounded-lg overflow-hidden border mb-2 flex items-center justify-center relative">
-                                <img src="${linkTampil}" class="w-full h-full object-contain" onerror="this.src='https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/broken_image/default/24px.svg'"/>
-                                <a href="${linkTampil}" target="_blank" class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity gap-1 backdrop-blur-xs">
-                                    <span class="material-symbols-outlined text-sm">open_in_new</span> Lihat Penuh
-                                </a>
-                            </div>
-                            <div class="px-1 space-y-1">
-                                <h5 class="text-xs font-bold text-gray-800 line-clamp-1 leading-tight" title="${judulTampil}">${judulTampil}</h5>
-                                <div class="flex justify-between items-center text-[10px] text-gray-400 font-medium">
-                                    <span>📅 ${tanggalTampil}</span>
-                                    <span class="text-emerald-800 font-bold">v1.0</span>
-                                </div>
-                                <div class="pt-2 border-t mt-2">
-                                    <button onclick="hapusPosterSistem('${docId}', '${data.id_aset_gambar || ''}', '${judulTampil.replace(/'/g, "\\'")}')" class="w-full py-1 text-center bg-red-50 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-colors text-[10px] font-bold flex items-center justify-center gap-0.5 border border-red-200/50 hover:border-red-600 focus:outline-none">
-                                        <span class="material-symbols-outlined text-xs">delete_forever</span> Lenyapkan Poster
-                                    </button>
-                                </div>
-                            </div>
-                        </div>`;
+                    allPostersCache.push({ id: docSnap.id, data: docSnap.data() });
                 });
+
+                renderPosterGallery();
 
             } catch (err) {
                 console.error(err);
@@ -425,9 +431,71 @@
             }
         }
 
+        // FUNGSI 2: MERENDER TAMPILAN SESUAI LIMITASI (MAKS 6 ATAU SEMUA)
+        function renderPosterGallery() {
+            const galleryBox = document.getElementById('poster-gallery-container');
+            const loadMoreContainer = document.getElementById('load-more-container');
+            const loadMoreIcon = document.getElementById('load-more-icon');
+            const loadMoreText = document.getElementById('load-more-text');
+
+            galleryBox.innerHTML = "";
+
+            const displayLimit = isShowingAll ? allPostersCache.length : 6;
+            const itemsToDisplay = allPostersCache.slice(0, displayLimit);
+
+            itemsToDisplay.forEach((docObj) => {
+                const data = docObj.data;
+                const docId = docObj.id;
+
+                const judulTampil = data.Judul || "Untitled Poster";
+                const linkTampil = data.Link_Gambar || "#";
+                const tanggalTampil = data.Tanggal || "-";
+
+                galleryBox.innerHTML += `
+                    <div class="bg-gray-50 border border-outline-variant/60 rounded-xl overflow-hidden p-2.5 flex flex-col justify-between group hover:border-primary transition-all shadow-xs relative">
+                        <div class="w-full h-44 bg-white rounded-lg overflow-hidden border mb-2 flex items-center justify-center relative">
+                            <img src="${linkTampil}" class="w-full h-full object-contain" onerror="this.src='https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/broken_image/default/24px.svg'"/>
+                            <a href="${linkTampil}" target="_blank" class="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity gap-1 backdrop-blur-xs">
+                                <span class="material-symbols-outlined text-sm">open_in_new</span> Lihat Penuh
+                            </a>
+                        </div>
+                        <div class="px-1 space-y-1">
+                            <h5 class="text-xs font-bold text-gray-800 line-clamp-1 leading-tight" title="${judulTampil}">${judulTampil}</h5>
+                            <div class="flex justify-between items-center text-[10px] text-gray-400 font-medium">
+                                <span>📅 ${tanggalTampil}</span>
+                            </div>
+                            <div class="pt-2 border-t mt-2">
+                                <button onclick="hapusPosterSistem('${docId}', '${data.id_aset_gambar || ''}', '${judulTampil.replace(/'/g, "\\'")}')" class="w-full py-1 text-center bg-red-50 hover:bg-red-600 text-red-700 hover:text-white rounded-lg transition-colors text-[10px] font-bold flex items-center justify-center gap-0.5 border border-red-200/50 hover:border-red-600 focus:outline-none">
+                                    <span class="material-symbols-outlined text-xs">delete_forever</span> Hapus Poster
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            if (allPostersCache.length > 6) {
+                loadMoreContainer.classList.remove('hidden');
+                if (isShowingAll) {
+                    loadMoreText.textContent = "Sembunyikan Poster";
+                    loadMoreIcon.textContent = "expand_less";
+                } else {
+                    const sisaPoster = allPostersCache.length - 6;
+                    loadMoreText.textContent = `Lihat Semua Poster (+${sisaPoster})`;
+                    loadMoreIcon.textContent = "expand_more";
+                }
+            } else {
+                loadMoreContainer.classList.add('hidden');
+            }
+        }
+
+        window.toggleSemuaPoster = function() {
+            isShowingAll = !isShowingAll; 
+            renderPosterGallery();
+        };
+
         // REMOVE MUTATION PURGE ASSET PIPELINE POSTER DAKWAH
         window.hapusPosterSistem = async function(idDokumen, idAsetGambar, namaPoster) {
-            if(!confirm(`⚠️ WARNING MUTASI DATA!\nApakah Anda yakin ingin menghapus mutlak poster: "${namaPoster}"?\n\nFile di gudang rilis biner GitHub dan index Firestore akan ditiadakan.`)) return;
+            if(!confirm(`⚠️ WARNING!\nApakah Anda yakin ingin menghapus poster: "${namaPoster}"?`)) return;
 
             try {
                 if(idAsetGambar && idAsetGambar !== "") {
@@ -448,12 +516,12 @@
                     status: "Published"
                 });
 
-                alert("✔ Sukses! Poster berhasil dibersihkan dari server.");
+                alert("✔ Sukses! Poster berhasil dihapus dari database.");
                 muatKoleksiPosterLokal();
 
             } catch (err) {
                 console.error(err);
-                alert("Kendala kegagalan menghapus berkas di server.");
+                alert("Kendala kegagalan menghapus berkas di database.");
             }
         }
 

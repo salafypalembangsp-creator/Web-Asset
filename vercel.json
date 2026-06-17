@@ -6,6 +6,10 @@
       "dest": "/api/upload.js"
     },
     {
+      "src": "/",
+      "dest": "/admin-login.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
