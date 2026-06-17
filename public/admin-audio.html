@@ -315,7 +315,6 @@
 
             if(!preparedThumbBase64) { alert("Silakan pilih gambar kover terlebih dahulu."); return; }
             if(!rawAudioFileObject) { alert("Silakan pilih file audio kajian."); return; }
-            if(rawAudioFileObject.size > MAX_AUDIO_SIZE_BYTES) { alert("Ukuran file audio melebihi 50MB."); return; }
 
             let parsedName = judul.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9.]/g, '');
             const cleanBaseName = parsedName || `audio.${Date.now()}`;
@@ -334,14 +333,14 @@
             progressZone.classList.remove('hidden');
 
             try {
-                // TAHAP 0: Ambil otorisasi GitHub sesaat dari server (BUKAN dari kode statis)
+                // TAHAP 0: Ambil token GitHub aman dari backend
                 progressBar.style.width = "10%"; percentText.textContent = "10%";
                 statusText.textContent = "Memverifikasi sesi admin...";
                 currentGithubSession = await ambilSesiGithubAman();
 
-                // TAHAP 1: UPLOAD KOVER GAMBAR via Vercel (DIUBAH AGAR MENGIRIM TAG EKSPLISIT v1.2)
+                // TAHAP 1: UPLOAD KOVER GAMBAR via Vercel (Paksa masuk ke rilis v1.2)
                 progressBar.style.width = "30%"; percentText.textContent = "30%";
-                statusText.textContent = "Mengunggah Gambar Kover via Vercel Engine...";
+                statusText.textContent = "Mengunggah Gambar Kover...";
 
                 const resThumb = await fetch(`${VERCEL_PRODUCTION_URL}/api/upload`, {
                     method: 'POST',
@@ -349,36 +348,47 @@
                     body: JSON.stringify({
                         fileName: fileThumbName,
                         fileBase64: preparedThumbBase64,
-                        tagRelease: "v1.2" // <--- KUNCI UTAMANYA DI SINI, JANGAN DIHAPUS!
+                        tagRelease: "v1.2" // Menjamin kover masuk ke v1.2, bukan v1.4 lagi!
                     })
                 });
 
                 let thumbData = await resThumb.json();
-                if(!resThumb.ok || !thumbData.success) throw new Error(thumbData.error || "Gagal mengunggah file kover via API Vercel.");
+                if(!resThumb.ok || !thumbData.success) throw new Error(thumbData.error || "Gagal mengunggah file kover.");
+
+                // TAHAP 2: UPLOAD AUDIO LANGSUNG DARI BROWSER KE GITHUB (Bypass Limit 4.5MB Vercel)
+                progressBar.style.width = "60%" ; percentText.textContent = "60%";
+                statusText.textContent = "Mengunggah Audio Langsung ke GitHub (Bypass Vercel)...";
+
+                const { token: ghToken, owner: REPO_OWNER, repo: REPO_NAME } = currentGithubSession;
+
+                // Ambil info rilis v1.1
+                const resRelease = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/v1.1`, {
+                    headers: { "Authorization": `token ${ghToken}` }
+                });
+                if(!resRelease.ok) throw new Error("Gagal memverifikasi folder rilis v1.1 di GitHub.");
+                const dataRelease = await resRelease.json();
+
+                // Unggah biner langsung via Endpoint Uploads GitHub menggunakan header otentikasi klasik
+                const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${dataRelease.id}/assets?name=${encodeURIComponent(fileAudioName)}`;
                 
-                // TAHAP 2: UPLOAD AUDIO KAJIAN SEAMLESS VIA PROXY BACKEND VERCEL ENGINE (BEBAS CORS)
-                progressBar.style.width = "70%"; percentText.textContent = "70%";
-                statusText.textContent = "Mengalirkan Berkas Audio ke Server Gudang (v1.1)...";
-
-                const user = auth.currentUser;
-                const fbIdToken = await user.getIdToken(true);
-
-                // Kirim biner murni secara langsung (raw binary stream) tanpa JSON packaging
-                const proxyUrl = `${VERCEL_PRODUCTION_URL}/api/audio-token?auth_token=${encodeURIComponent(fbIdToken)}&file_name=${encodeURIComponent(fileAudioName)}`;
-                const resUploadAudio = await fetch(proxyUrl, {
+                const resUploadAudio = await fetch(uploadUrl, {
                     method: "POST",
                     headers: {
-                        "Content-Type": rawAudioFileObject.type || "audio/mpeg"
+                        "Authorization": `token ${ghToken}`,
+                        "Content-Type": "audio/mpeg"
                     },
-                    body: rawAudioFileObject // Mengirim objek file biner murni
+                    body: rawAudioFileObject // Kirim langsung file utuh 22MB dari browser
                 });
 
+                if(!resUploadAudio.ok) {
+                    const errDetail = await resUploadAudio.json();
+                    throw new Error(errDetail.message || "GitHub menolak unggahan audio besar.");
+                }
                 let audioData = await resUploadAudio.json();
-                if(!resUploadAudio.ok || !audioData.success) throw new Error(audioData.error || "Gagal memproses pengiriman biner file audio.");
-                
+
                 // TAHAP 3: SINKRONISASI FIRESTORE
                 progressBar.style.width = "90%"; percentText.textContent = "90%";
-                statusText.textContent = "Sinkronisasi Dokumen Database...";
+                statusText.textContent = "Menyimpan data katalog ke database...";
 
                 const formatTanggalStr = new Date().toISOString().split('T')[0];
                 const finalAudioLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/v1.1/${fileAudioName}`;
@@ -397,7 +407,7 @@
 
                 progressBar.style.width = "100%"; percentText.textContent = "100%";
                 statusText.textContent = "Selesai!";
-                alert("✔ Rekaman kajian ilmu berhasil dipublikasikan!");
+                alert("✔ Audio Kajian Besar Berhasil Dipublikasikan!");
 
                 resetFormPipeline();
                 muatKoleksiAudioLokal();
@@ -407,7 +417,6 @@
                 alert(`❌ Kendala Sistem: ${err.message}`);
             } finally {
                 btnSubmit.disabled = false;
-                // Buang token dari memory begitu proses selesai (sukses ataupun gagal)
                 currentGithubSession = null;
             }
         });
