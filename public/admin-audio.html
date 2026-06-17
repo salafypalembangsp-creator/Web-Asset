@@ -339,7 +339,7 @@
                 statusText.textContent = "Memverifikasi sesi admin...";
                 currentGithubSession = await ambilSesiGithubAman();
 
-                // TAHAP 1: UPLOAD KOVER GAMBAR via Vercel (tidak berubah)
+                // TAHAP 1: UPLOAD KOVER GAMBAR via Vercel (DIUBAH AGAR MENGIRIM TAG EKSPLISIT v1.2)
                 progressBar.style.width = "30%"; percentText.textContent = "30%";
                 statusText.textContent = "Mengunggah Gambar Kover via Vercel Engine...";
 
@@ -348,37 +348,34 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         fileName: fileThumbName,
-                        fileBase64: preparedThumbBase64
+                        fileBase64: preparedThumbBase64,
+                        tagRelease: "v1.2" // <--- KUNCI UTAMANYA DI SINI, JANGAN DIHAPUS!
                     })
                 });
 
                 let thumbData = await resThumb.json();
-                if(!resThumb.ok || !thumbData.success) throw new Error("Gagal mengunggah file kover via API Vercel.");
-
-                // TAHAP 2: UPLOAD AUDIO LANGSUNG BROWSER -> GITHUB (token didapat sesaat di Tahap 0)
+                if(!resThumb.ok || !thumbData.success) throw new Error(thumbData.error || "Gagal mengunggah file kover via API Vercel.");
+                
+                // TAHAP 2: UPLOAD AUDIO KAJIAN SEAMLESS VIA PROXY BACKEND VERCEL ENGINE (BEBAS CORS)
                 progressBar.style.width = "70%"; percentText.textContent = "70%";
-                statusText.textContent = "Mengalirkan Berkas Audio Langsung ke GitHub...";
+                statusText.textContent = "Mengalirkan Berkas Audio ke Server Gudang (v1.1)...";
 
-                const { token: ghToken, owner: REPO_OWNER, repo: REPO_NAME } = currentGithubSession;
+                const user = auth.currentUser;
+                const fbIdToken = await user.getIdToken(true);
 
-                const resRelease = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/v1.1`, {
-                    headers: { "Authorization": `Bearer ${ghToken}` }
-                });
-                const dataRelease = await resRelease.json();
-                if(!resRelease.ok) throw new Error("Akses verifikasi tag v1.1 di Github ditolak.");
-
-                const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${dataRelease.id}/assets?name=${encodeURIComponent(fileAudioName)}`;
-                const resUploadAudio = await fetch(uploadUrl, {
+                // Kirim biner murni secara langsung (raw binary stream) tanpa JSON packaging
+                const proxyUrl = `${VERCEL_PRODUCTION_URL}/api/audio-token?auth_token=${encodeURIComponent(fbIdToken)}&file_name=${encodeURIComponent(fileAudioName)}`;
+                const resUploadAudio = await fetch(proxyUrl, {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${ghToken}`,
                         "Content-Type": rawAudioFileObject.type || "audio/mpeg"
                     },
-                    body: rawAudioFileObject
+                    body: rawAudioFileObject // Mengirim objek file biner murni
                 });
-                let audioData = await resUploadAudio.json();
-                if(!resUploadAudio.ok) throw new Error("Gagal mengalirkan data biner audio langsung ke GitHub.");
 
+                let audioData = await resUploadAudio.json();
+                if(!resUploadAudio.ok || !audioData.success) throw new Error(audioData.error || "Gagal memproses pengiriman biner file audio.");
+                
                 // TAHAP 3: SINKRONISASI FIRESTORE
                 progressBar.style.width = "90%"; percentText.textContent = "90%";
                 statusText.textContent = "Sinkronisasi Dokumen Database...";
