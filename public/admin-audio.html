@@ -14,10 +14,6 @@
             background-color: #F3F4F6;
             margin: 0;
             padding: 0;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 5px;
@@ -31,24 +27,6 @@
             border-radius: 10px;
         }
     </style>
-    <!-- SKRIP PROTEKSI BERLAPIS: ANTI INSPECT -->
-    <script>
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.addEventListener('keydown', function(e) {
-            if (
-                e.key === "F12" ||
-                (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j" || e.key === "C" || e.key === "c")) ||
-                (e.ctrlKey && (e.key === "U" || e.key === "u" || e.key === "S" || e.key === "s"))
-            ) {
-                e.preventDefault();
-                return false;
-            }
-        });
-        setInterval(function() {
-            function isiBom() { debugger; }
-            try { isiBom(); } catch(err) {}
-        }, 100);
-    </script>
     <script id="tailwind-config">
         tailwind.config = {
             theme: {
@@ -94,7 +72,7 @@
                 <span class="text-sm font-medium">Posters</span>
             </a>
         </nav>
-        
+
         <div class="px-4 mt-auto space-y-2">
             <div class="flex items-center p-3 rounded-xl bg-primary-container/30 border border-emerald-900/20">
                 <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-primary font-bold overflow-hidden shadow-inner shrink-0">
@@ -121,18 +99,17 @@
         <main class="p-4 lg:p-6 space-y-4 max-w-[1400px]">
             <section class="bg-white border border-gray-200 p-4 lg:p-6 rounded-2xl shadow-xs">
                 <h3 class="text-lg lg:text-xl font-bold text-primary tracking-tight">Katalog & Unggah Rekaman Kajian</h3>
-                <p class="text-xs sm:text-sm text-gray-500 mt-0.5 font-medium">Alur Kerja Cepat: Audio diunggah langsung ke GitHub, Kover diproses aman lewat Vercel Engine.</p>
+                <p class="text-xs sm:text-sm text-gray-500 mt-0.5 font-medium">Alur Kerja: Audio diunggah langsung ke GitHub (token diambil aman dari server), Kover diproses.</p>
             </section>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 items-start">
-                
-                <!-- FORMULIR UPLOAD (STRUKTUR TERPISAH DARI GANGGUAN BINER) -->
+
+                <!-- FORMULIR UPLOAD -->
                 <section class="bg-white border border-gray-200 p-4 lg:p-5 rounded-2xl shadow-xs space-y-4 xl:col-span-1">
                     <div class="border-b border-gray-100 pb-2">
                         <h4 class="text-xs sm:text-sm font-bold text-primary uppercase tracking-wider">Formulir Audio Kajian Baru</h4>
                     </div>
 
-                    <!-- Input teks menggunakan form biasa -->
                     <form id="form-upload-audio" class="space-y-4 text-xs sm:text-sm">
                         <div>
                             <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-1.5">Judul / Tema Kajian</label>
@@ -150,11 +127,11 @@
                         </div>
                     </form>
 
-                    <!-- SEKAT AMAN: Input File diletakkan di luar tag <form> agar tidak menginterupsi payload request -->
                     <div class="space-y-4 text-xs sm:text-sm pt-2">
                         <div>
-                            <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-1.5">Pilih File Audio Kajian (MPEG / MP3)</label>
+                            <label class="block text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-1.5">Pilih File Audio Kajian (MPEG / MP3, maks 50MB)</label>
                             <input id="audio-file-uploader" type="file" accept="audio/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-container file:cursor-pointer cursor-pointer pt-1"/>
+                            <p id="audio-file-size-info" class="text-[10px] text-gray-400 mt-1 font-medium"></p>
                         </div>
 
                         <div>
@@ -187,7 +164,6 @@
                             <button type="button" id="btn-cancel-audio" class="w-1/3 bg-red-50 hover:bg-red-100/80 text-red-700 font-semibold text-xs py-3 rounded-xl border border-red-200/50 transition-all text-center">
                                 Batal
                             </button>
-                            <!-- Tombol disinkronkan dengan id form di atas menggunakan atribut form="form-upload-audio" -->
                             <button type="submit" form="form-upload-audio" id="btn-submit-audio" class="w-2/3 bg-primary text-white font-semibold text-xs py-3 rounded-xl hover:bg-primary-container transition-all flex items-center justify-center gap-1.5 shadow-md">
                                 <span class="material-symbols-outlined text-base">cloud_upload</span>
                                 <span>Publikasikan Audio</span>
@@ -234,16 +210,37 @@
         const db = getFirestore(app);
 
         const VERCEL_PRODUCTION_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-            ? "https://web-asset-ruby.vercel.app" 
+            ? "https://web-asset-ruby.vercel.app"
             : window.location.origin;
 
-        // TOKEN RAHAISA UNTUK AUDIO (Dipecah agar lolos push protection)
-        const partA = "ghp_";
-        const partB = "INZkUmoAg6HivOW41ogSHEBqxKW2x20Gz2mn"; 
-        const GITHUB_DIRECT_TOKEN = partA + partB;
+        // Batas ukuran file audio yang diizinkan (samakan dengan kebutuhan: 0-50MB)
+        const MAX_AUDIO_SIZE_BYTES = 50 * 1024 * 1024;
 
-        const REPO_OWNER = "salafypalembangsp-creator";
-        const REPO_NAME = "Web-Asset";
+        // CATATAN KEAMANAN:
+        // Token GitHub TIDAK ADA di file ini sama sekali. Token diambil sesaat
+        // dari endpoint /api/audio-token (Vercel function) yang mensyaratkan
+        // login admin via Firebase Auth. Token ini hanya hidup di memory
+        // browser selama proses upload/hapus berlangsung, lalu dibuang.
+        let currentGithubSession = null; // { token, owner, repo }
+
+        async function ambilSesiGithubAman() {
+            const user = auth.currentUser;
+            if (!user) throw new Error("Sesi admin tidak ditemukan, silakan login ulang.");
+
+            const idToken = await user.getIdToken(/* forceRefresh */ true);
+            const res = await fetch(`${VERCEL_PRODUCTION_URL}/api/audio-token`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${idToken}`
+                }
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                throw new Error(data.error || "Gagal mengambil otorisasi server.");
+            }
+            return { token: data.token, owner: data.owner, repo: data.repo };
+        }
 
         let currentAdminEmail = "Admin";
         let rawAudioFileObject = null;
@@ -273,21 +270,18 @@
             }
         });
 
-        // HANDLER KOVER GAMBAR (Menggunakan pembacaan dataUrl murni seperti alur poster Anda)
+        // HANDLER KOVER GAMBAR
         document.getElementById('audio-thumb-uploader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if(!file) return;
             const reader = new FileReader();
             reader.onload = function(event) {
                 const dataUrl = event.target.result;
-                
-                // Ambil string base64 murni di belakang koma
-                if (dataUrl.includes(",")) {
-                    preparedThumbBase64 = dataUrl.split(",")[1];
+                if (dataUrl.startsWith("data:image")) {
+                    preparedThumbBase64 = dataUrl.substring(dataUrl.indexOf(",") + 1);
                 } else {
                     preparedThumbBase64 = dataUrl;
                 }
-                
                 document.getElementById('audio-preview-visual').src = dataUrl;
                 document.getElementById('audio-preview-visual').classList.remove('hidden');
                 document.getElementById('audio-preview-placeholder').classList.add('hidden');
@@ -295,9 +289,21 @@
             reader.readAsDataURL(file);
         });
 
-        // HANDLER AUDIO FILE
+        // HANDLER AUDIO FILE (+ validasi ukuran di sisi client agar pengguna cepat tahu)
         document.getElementById('audio-file-uploader').addEventListener('change', function(e) {
-            rawAudioFileObject = e.target.files[0] || null;
+            const file = e.target.files[0] || null;
+            const infoEl = document.getElementById('audio-file-size-info');
+
+            if (file && file.size > MAX_AUDIO_SIZE_BYTES) {
+                alert(`Ukuran file (${(file.size / 1024 / 1024).toFixed(1)}MB) melebihi batas maksimum 50MB.`);
+                e.target.value = "";
+                rawAudioFileObject = null;
+                infoEl.textContent = "";
+                return;
+            }
+
+            rawAudioFileObject = file;
+            infoEl.textContent = file ? `Ukuran: ${(file.size / 1024 / 1024).toFixed(2)} MB` : "";
         });
 
         // SUBMIT & EKSEKUSI PIPELINE
@@ -309,6 +315,7 @@
 
             if(!preparedThumbBase64) { alert("Silakan pilih gambar kover terlebih dahulu."); return; }
             if(!rawAudioFileObject) { alert("Silakan pilih file audio kajian."); return; }
+            if(rawAudioFileObject.size > MAX_AUDIO_SIZE_BYTES) { alert("Ukuran file audio melebihi 50MB."); return; }
 
             let parsedName = judul.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z0-9.]/g, '');
             const cleanBaseName = parsedName || `audio.${Date.now()}`;
@@ -327,39 +334,44 @@
             progressZone.classList.remove('hidden');
 
             try {
-                // TAHAP 1: UPLOAD KOVER GAMBAR (Disamakan persis dengan payload poster & profil)
+                // TAHAP 0: Ambil otorisasi GitHub sesaat dari server (BUKAN dari kode statis)
+                progressBar.style.width = "10%"; percentText.textContent = "10%";
+                statusText.textContent = "Memverifikasi sesi admin...";
+                currentGithubSession = await ambilSesiGithubAman();
+
+                // TAHAP 1: UPLOAD KOVER GAMBAR via Vercel (tidak berubah)
                 progressBar.style.width = "30%"; percentText.textContent = "30%";
                 statusText.textContent = "Mengunggah Gambar Kover via Vercel Engine...";
-                
+
                 const resThumb = await fetch(`${VERCEL_PRODUCTION_URL}/api/upload`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        fileName: fileThumbName, 
+                    body: JSON.stringify({
+                        fileName: fileThumbName,
                         fileBase64: preparedThumbBase64
                     })
                 });
-                
+
                 let thumbData = await resThumb.json();
                 if(!resThumb.ok || !thumbData.success) throw new Error("Gagal mengunggah file kover via API Vercel.");
 
-                // TAHAP 2: UPLOAD AUDIO RAJSASA DIRECT BROWSER TO GITHUB (Bypass Vercel 4.5MB limit)
+                // TAHAP 2: UPLOAD AUDIO LANGSUNG BROWSER -> GITHUB (token didapat sesaat di Tahap 0)
                 progressBar.style.width = "70%"; percentText.textContent = "70%";
-                statusText.textContent = "Mengalirkan Berkas Audio Direct ke GitHub (v1.1)...";
+                statusText.textContent = "Mengalirkan Berkas Audio Langsung ke GitHub...";
 
-                // Ambil info data rilis tag v1.1
+                const { token: ghToken, owner: REPO_OWNER, repo: REPO_NAME } = currentGithubSession;
+
                 const resRelease = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/tags/v1.1`, {
-                    headers: { "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}` }
+                    headers: { "Authorization": `Bearer ${ghToken}` }
                 });
                 const dataRelease = await resRelease.json();
                 if(!resRelease.ok) throw new Error("Akses verifikasi tag v1.1 di Github ditolak.");
 
-                // Kirim langsung file fisik utuh (Blob) ke GitHub
                 const uploadUrl = `https://uploads.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/${dataRelease.id}/assets?name=${encodeURIComponent(fileAudioName)}`;
                 const resUploadAudio = await fetch(uploadUrl, {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}`,
+                        "Authorization": `Bearer ${ghToken}`,
                         "Content-Type": rawAudioFileObject.type || "audio/mpeg"
                     },
                     body: rawAudioFileObject
@@ -367,13 +379,13 @@
                 let audioData = await resUploadAudio.json();
                 if(!resUploadAudio.ok) throw new Error("Gagal mengalirkan data biner audio langsung ke GitHub.");
 
-                // TAHAP 3: SINKRONISASI COUPLING FIRESTORE DOKUMEN
+                // TAHAP 3: SINKRONISASI FIRESTORE
                 progressBar.style.width = "90%"; percentText.textContent = "90%";
                 statusText.textContent = "Sinkronisasi Dokumen Database...";
 
                 const formatTanggalStr = new Date().toISOString().split('T')[0];
-                const finalAudioLink = `https://github.com/salafypalembangsp-creator/Web-Asset/releases/download/v1.1/${fileAudioName}`;
-                const finalThumbLink = `https://github.com/salafypalembangsp-creator/Web-Asset/releases/download/v1.2/${fileThumbName}`;
+                const finalAudioLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/v1.1/${fileAudioName}`;
+                const finalThumbLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/releases/download/v1.2/${fileThumbName}`;
 
                 await addDoc(collection(db, "audio"), {
                     Judul: judul,
@@ -381,7 +393,7 @@
                     Kategori: kategori,
                     Link_Audio: finalAudioLink,
                     Link_Thumbnail: finalThumbLink,
-                    id_aset_audio: audioData.id, 
+                    id_aset_audio: audioData.id,
                     id_aset_thumb: thumbData.assetId,
                     Tanggal: formatTanggalStr
                 });
@@ -396,8 +408,10 @@
             } catch (err) {
                 console.error(err);
                 alert(`❌ Kendala Sistem: ${err.message}`);
-            } finally { 
-                btnSubmit.disabled = false; 
+            } finally {
+                btnSubmit.disabled = false;
+                // Buang token dari memory begitu proses selesai (sukses ataupun gagal)
+                currentGithubSession = null;
             }
         });
 
@@ -407,6 +421,7 @@
             document.getElementById('audio-preview-visual').classList.add('hidden');
             document.getElementById('audio-preview-placeholder').classList.remove('hidden');
             document.getElementById('uploader-progress-zone').classList.add('hidden');
+            document.getElementById('audio-file-size-info').textContent = "";
             rawAudioFileObject = null; preparedThumbBase64 = "";
         }
         document.getElementById('btn-cancel-audio').addEventListener('click', function() {
@@ -488,7 +503,6 @@
                 accordionBox.innerHTML += cardHtml;
             });
 
-            // ACCORDION EVENTS BIND
             document.querySelectorAll('.btn-toggle-audio-acc').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const targetId = this.getAttribute('data-target'); const bodyBox = document.getElementById(targetId);
@@ -521,13 +535,14 @@
             } catch(e) { alert("Gagal memperbarui database."); }
         }
 
-        // PURGE DELETE ASSETS
+        // PURGE DELETE ASSETS (token GitHub juga diambil sesaat lewat endpoint yang sama)
         async function hapusAudioSistem(idDokumen, idAudioAset, idThumbAset, namaAudio) {
             if(!confirm(`⚠️ MUTASI PENGHAPUSAN MUTLAK!\nApakah Anda yakin ingin melenyapkan rekaman: "${namaAudio}"?`)) return;
             try {
-                if(idAudioAset) {
+                if (idAudioAset) {
+                    const { token: ghToken, owner: REPO_OWNER, repo: REPO_NAME } = await ambilSesiGithubAman();
                     await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/assets/${idAudioAset}`, {
-                        method: 'DELETE', headers: { "Authorization": `Bearer ${GITHUB_DIRECT_TOKEN}` }
+                        method: 'DELETE', headers: { "Authorization": `Bearer ${ghToken}` }
                     });
                 }
                 if(idThumbAset) {
@@ -538,7 +553,10 @@
                 }
                 await deleteDoc(doc(db, "audio", idDokumen));
                 alert("✔ Sukses membersihkan berkas kajian!"); muatKoleksiAudioLokal();
-            } catch(err) { alert("Terjadi kendala saat menghapus berkas."); }
+            } catch(err) {
+                console.error(err);
+                alert("Terjadi kendala saat menghapus berkas.");
+            }
         }
 
         // LOGOUT LOGIC

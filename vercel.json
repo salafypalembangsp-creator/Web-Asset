@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/api/upload",
-      "dest": "/api/upload.js"
+  "functions": {
+    "api/upload.js": {
+      "maxDuration": 60
     },
-    {
-      "src": "/",
-      "dest": "/admin-login.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+    "api/audio-token.js": {
+      "maxDuration": 30
     }
+  },
+  "routes": [
+    { "src": "/api/upload", "dest": "/api/upload.js" },
+    { "src": "/api/audio-token", "dest": "/api/audio-token.js" },
+    { "src": "/", "dest": "/admin-login.html" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
