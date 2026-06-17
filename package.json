@@ -4,6 +4,7 @@
   "description": "Dashboard Admin Salafy Palembang",
   "main": "api/upload.js",
   "dependencies": {
-    "@octokit/rest": "^20.1.1"
+    "@octokit/rest": "^20.1.1",
+    "firebase-admin": "^12.0.0"
   }
 }
